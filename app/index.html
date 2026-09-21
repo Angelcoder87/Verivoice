@@ -426,7 +426,12 @@ function finish(claims){
   var low=' '+claims.join(' ').toLowerCase()+' ';
   var unsafe=SAFETY_WORDS.some(function(w){return low.indexOf(w)>=0;});
   if(unsafe){document.getElementById('safety').style.display='block'; window.scrollTo({top:0,behavior:'smooth'});}
-  var results=claims.map(function(c){return verdictCard(c,reconcile(c));});
+  var results=[], seen=[];
+  claims.forEach(function(c){
+    var m=reconcile(c);
+    if(m){ if(seen.indexOf(m)>=0) return; seen.push(m); }
+    results.push(verdictCard(c,m));
+  });
   var html='<div class="card"><h2>'+T('claimTitle')+'</h2></div>';
   if(claims.length===1 && claims[0].length<30) html='<div class="card"><h2>'+T('noClaims2')+'</h2></div>';
   results.forEach(function(r){html+=r.html;});
