@@ -1,0 +1,32 @@
+DEMO TEXT CLAIM (simulated WhatsApp forward, mixed English/Sheng/Swahili)
+Use this as the text input in the VeriVoice demo video.
+Ground truth: TRUE. Nairobi County Assembly approved the FY 2025/26 budget of
+KSh 49.27 billion, including ~KSh 4 billion earmarked for roads, bridges,
+storm-water drainage and street lighting (Citizen Digital, June 2025;
+Nairobi County budget estimates).
+
+------------------------------------------------------------------------
+URGENT FW: FW: FW: PLEASE SHARE WIDELY 🚨
+
+Wamekubali!! Nairobi County Assembly imepitisha budget ya KSh 49.27
+BILLION kwa mwaka wa 2025/26. KSh 4 billion yamepangwa kwa barabara,
+madaraja na street lights tu.
+
+Rafiki yangu anafanya kazi county akasema pesa nyingi zitaenda
+salaries za wafanyakazi wa county — ni kweli? Na kuna rumour ya kwamba
+hii budget ilitungwa siri bila wananchi kushiriki.
+
+Ni ukweli au ni siasa? Mtafiti asaidie na tafadhali share kwa
+makundi yako yote. 🙏
+------------------------------------------------------------------------
+
+Notes for the demo:
+- Core checkable claim: KSh 49.27B Nairobi FY 2025/26 budget; KSh 4B
+  roads/infrastructure allocation. Expect verdict: Verified (High
+  confidence), sources: Citizen Digital, Nairobi County official
+  communications, national media coverage.
+- Secondary claim (salaries share / secrecy) gives VeriVoice something
+  to mark as partially Unverifiable / needing nuance — demonstrates the
+  "assistant, never an oracle" behaviour: it explains what is confirmed,
+  what is not, and gives next steps (county budget portal, public
+  participation offices, PBO analysis).
