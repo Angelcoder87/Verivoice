@@ -36,15 +36,9 @@ Every verdict returned by the live demo is checked against real, current sources
 3. The pipeline runs end-to-end (typically 1–2 minutes): the request is queued, an AI agent researches the claim against authoritative Kenyan sources, and the bilingual verdict card appears — sources, confidence, next steps, caveats.
 4. Toggle EN/SW for the explanation language, then use *Share on WhatsApp* to send the verdict back where the claim came from.
 
-## Contents of this repo
-
-- `app/` — **the working proof of concept** (mobile web app + backend functions + entity-triggered workflow, built on Base44) 
-
 ## Links
 
-- **Live demo (working pipeline):** https://angelcoder87.github.io/Verivoice/
-- **Concept prototype (static):** https://angelcoder87.github.io/Verivoice/
-- **Demo video:** 
+- **Concept prototype:** https://angelcoder87.github.io/Verivoice/
 
 ---
 
