@@ -37,7 +37,7 @@ VeriVoice **must never present itself as an all-knowing authority on truth**. Ve
 ## Why it fits the real conditions it will live in
 
 - **Low bandwidth**: responses are text-first and lightweight; voice input is uploaded once and processed server-side; images are downscaled; the share-back card is a few lines of text, not a video.
-- **Multilingual by default**: input and output in English and Kiswahili, with Sheng tolerated generously — people do not switch registers to verify a rumour.
+- **Multilingual by default**: input and output in English and Kiswahili, with mixed-register (Sheng) input tolerated generously, and a full Sheng interface option (EN / SW / SH) already working in the companion prototype — people do not switch registers to verify a rumour.
 - **Accessibility**: voice-first input means a user never has to type; large text and simple language serve low-literacy users.
 - **Privacy**: no accounts required in the PoC; recordings and images are processed and not retained; nothing is shared onward without an explicit action by the user.
 - **Local relevance**: verdicts and next steps reference Kenyan institutions, hotlines, and official channels — not generic "contact the authorities".
@@ -51,4 +51,10 @@ Misinformation in Kenya is not an abstraction: it has driven mob action, depress
 
 ## Proof of concept scope
 
-The PoC demonstrates the full core loop end-to-end — voice note, text, and image in; transcribed, claim-checked, explained, and shareable out — built on Base44 with AI transcription, claim extraction, and evidence reconciliation. It is an invention sprint, not a product launch: it demonstrates the problem, the users, the loop, and why it deserves to exist.
+The PoC demonstrates the full core loop end-to-end — voice note and text in; transcribed, claim-checked, explained, and shareable out. Two artefacts make this concrete:
+
+1. **The live verification pipeline** (the primary proof of concept, deployed and publicly testable): a mobile-first web app submits the claim to a serverless pipeline that transcribes voice notes, has an AI agent research the claim against live web sources, and writes a bilingual verdict card — verdict label, confidence, sources, next steps, and honest caveats — back to a database the user's app polls. Every verdict in the live demo is checked against real, current sources at the moment you test it. (Screenshot/image input is designed but deliberately out of scope for the sprint.)
+
+2. **A static concept prototype** (runs fully in the browser) exploring the fuller interface vision: Sheng/Kiswahili/English UI, an OCR tab for screenshots, claim-extraction cards, and safety routing to Kenyan hotlines — with pre-computed demo scenarios standing in for the live reconciliation.
+
+It is an invention sprint, not a product launch: together the two artefacts demonstrate the problem, the users, the loop, and why it deserves to exist.
