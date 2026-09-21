@@ -79,7 +79,7 @@ a{color:#7dd3fc}
 <div class="wrap">
   <header>
     <div class="logo"><div class="mark">🔎</div><span>VeriVoice</span></div>
-    <div class="langtoggle"><button id="btnEn" class="on" onclick="setLang('en')">EN</button><button id="btnSw" onclick="setLang('sw')">SW</button></div>
+    <div class="langtoggle"><button id="btnEn" class="on" onclick="setLang('en')">EN</button><button id="btnSw" onclick="setLang('sw')">SW</button><button id="btnSh" onclick="setLang('sh')">SH</button></div>
   </header>
   <p class="tagline" id="t_tagline">Verify. Understand. Act. — check it before you share it.</p>
 
@@ -212,6 +212,36 @@ var L = {
     processing:"Inakagua…",
     copied:"Imenakiliwa ✓",
     noClaims2:"Hakuna madai makuu yaliyopatikana."
+  },
+  sh:{
+    tagline:"Hakiki. Elewa. Tenda. — check kabla ya kushare.",
+    howtitle:"Namna ya kutumia",
+    howtext:"Tuma VeriVoice ujumbe kama ulivyoipokea — sauti, text, ama screenshot. Inatranscribe, inatoa madai, inahakiki ushahidi, na inakupa verdict kwa lugha rahisi pamoja na sources na next steps.",
+    tabVoice:"Sauti",tabText:"Text",tabImg:"Picha",
+    micIdle:"Bonyeza mic na ongea (Sheng na Kiswahili ziko karibu). Live transcription inatumia speech recognition ya browser — Chrome ni best. Unaweza pia kuandika ama ku-edit transcript hapa chini.",
+    micRec:"Inaskiliza… ongea sasa. Bonyeza tena kuisha.",
+    micNo:"Browser yako haipati live speech recognition. Tumia Chrome, ama andika ujumbe kwa tab ya Text — kila kitu kingine kinaenda sawa.",
+    drop:"📷 Bonyeza kuchangua screenshot ya ujumbe",
+    check:"Hakiki hii info",
+    privacy:"Hakuna account inayohitajika. Hakuna kitu tunachostore.",
+    ps1:"Transcription / ku-extract text",ps2:"Kutoa madai",ps3:"Kutafuta ushahidi",ps4:"AI reconciliation",ps5:"Kuandaa verdict cards",
+    safetyH:"⚠️ Ujumbe huu unagusa usalama",
+    safetyP:"Kwa sababu ujumbe huu unaweza kuhusu violence, afya ya umma, ama usalama wa umma, VeriVoice inakupa kwanza pathways za msaada zilizothibitishwa. Police: 999 ama 112. DCI Hotline ya Uhalifu: 0800 722 203. GBV helpline: 1195. Kuripoti hate speech: 4157.",
+    claimTitle:"Madai makuu tumeyopata",
+    supported:"NI TRUE",disputed:"NI CON",misleading:"HALF-TRUTH",unverified:"HAIJAHAKIKIWA",
+    evidence:"Ushahidi",unknown:"Tunachokosa kujua",next:"Next steps unazoweza kuchukua",confidence:"Confidence",
+    unvExp:"Hakuna ushahidi ya kutosha ya kukagua hii. Usishare hadi imethibitishwa na source unayoiamini.",
+    noClaims:"Hakuna madai makuu kwenye ujumbe huu. Jaribu kutuma tena kwa maneno ulivyoipokea.",
+    shareH:"Share kwa group",
+    copy:"Copy summary card",share:"Share…",
+    summaryTitle:"VeriVoice check — summary",
+    summaryBy:"Imecheckiwa na VeriVoice 🔎",
+    ex:["Jaribu: uvumi wa ada za shule (Sheng)","Jaribu: dai la bursary ya county","Jaribu: tender ya WhatsApp"],
+    ocr:"Inasoma picha…",
+    ocrDone:"Text imetolewa kwa picha. Unaweza kusahihisha hapa chini.",
+    processing:"Inahakiki…",
+    copied:"Imecopy ✓",
+    noClaims2:"Hakuna madai makuu kwenye ujumbe huu."
   }
 };
 var lang='en';
@@ -220,6 +250,7 @@ function setLang(l){
   lang=l;
   document.getElementById('btnEn').className=l==='en'?'on':'';
   document.getElementById('btnSw').className=l==='sw'?'on':'';
+  document.getElementById('btnSh').className=l==='sh'?'on':'';
   document.getElementById('t_tagline').textContent=T('tagline');
   document.getElementById('t_howtitle').textContent=T('howtitle');
   document.getElementById('t_howtext').textContent=T('howtext');
@@ -317,6 +348,9 @@ var EVIDENCE=[
   verdict:"disputed", confidence:72,
   swClaim:"Kaunti imeanza ada mpya kwenye shule za kaunti kuanzia muhula ujao; watoto watachapishwa KSh 3,000 kabla ya kurudi.",
   enClaim:"County schools have introduced a new fee starting next term, and children must pay KSh 3,000 before returning.",
+  shClaim:"Shule za county zimeanza ada mpya kuanzia next term — watoto wanalipia 3k kabla hawajarudi shule.",
+  shUnknown:"Hatuna circular rasmi ambayo voice note inarefer — hakuna doc imecirculate. Kuna wezekana ni ombi la shule moja, lakini hakuna ada mpya ya county mzima iko kwa record.",
+  shNext:["Usilipe 'registration' ama 'return fee' yoyote kabla uconfirm na head teacher na ofisi ya elimu ya sub-county.","Ulice sender anaye circular ya kusema — ada mpya halali huja na doc, si voice note pekee.","Report any extortion ya ada kwa Ministry of Education."],
   sources:[
     {name:"Ministry of Education — public school fee guidelines", note:"Public day schools follow national fee guidelines; no county circular announces a KSh 3,000 'return fee'.", url:"https://www.education.go.ke/"},
     {name:"County Education Office", note:"Confirm any fee change directly with the sub-county director of education before paying anything.", url:"https://www.education.go.ke/"}
@@ -330,6 +364,9 @@ var EVIDENCE=[
   keywords:["bursary","bursaries","scholarship","ksh 2 billion","bilioni mbili","ksh 30,000","elfu thelathini","every student","ward","applications close","chief"],
   verdict:"misleading", confidence:64,
   enClaim:"The county has set aside KSh 2 billion for bursaries and every student in the ward will get KSh 30,000, with applications closing Friday at the chief's office.",
+  shClaim:"County imeweka KSh billion 2 kwa bursary na kila student wa ward atapata 30k — applications zinaisha Friday ofisi ya chief.",
+  shUnknown:"Hatupati uthibitisho wa billion 2 wala deadline ya Friday kutoka kwa notice rasmi yoyote. Kiasi kwa student kinatofautiana na ward.",
+  shNext:["Confirm window halali ya bursary na kamati ya ward ama ofisi ya MCA — kuapply ni free.","Usilipe mtu yoyote 'arejesti' bursary — application halali ni free kabisa.","Omba reference ya notice rasmi kabla ufuate deadline yoyote."],
   swClaim:"Kaunti imeweka akiba ya KSh bilioni 2 kwa bursary; kila mwanafunzi wa kata atapata KSh 30,000, maombi yafunguki Ijumaa ofisini kwa chief.",
   sources:[
     {name:"County budget estimates (County Assembly records)", note:"The county's bursary fund is real but smaller than claimed, and is disbursed through ward bursary committees with published criteria — not a flat KSh 30,000 for every student.", url:"https://www.parliament.go.ke/"},
@@ -344,6 +381,9 @@ var EVIDENCE=[
   keywords:["tender","tender notice","bids","bid","procurement","gikomba","phase 2","mpesa","m-pesa","registration fee","procurement officer","whatsapp","deadline tomorrow","construction","market"],
   verdict:"disputed", confidence:85,
   enClaim:"A county tender for Gikomba market Phase 2 requires a KSh 5,000 M-PESA 'registration fee' sent to a procurement officer via WhatsApp.",
+  shClaim:"Tender ya county ya Gikomba market Phase 2 inataka 'registration fee' ya 5k via M-PESA kwa procurement officer kwa WhatsApp.",
+  shUnknown:"Hatupati tender ya Gikomba Phase 2 kwenye portal ya umma inayomatch hii notice. Pamoja na malipo kwa personal number, hii ni pattern ya fraud inayojulikana.",
+  shNext:["Check tenders.go.ke kabla utume pesa — kama haipo kwenye portal, si tender halali.","Report number hiyo kwa DCI Hotline ya Uhalifu: 0800 722 203 na waonye group.","Usitume M-PESA kwa mtu binafsi kwa tenda za county — ada halali huenda paybill ya county na receipt."],
   swClaim:"Tender ya kaunti ya soko la Gikomba Awamu ya 2 inahitaji 'ada ya usajili' ya KSh 5,000 kupitia M-PESA kwa ofisa wa ununuzi kwa WhatsApp.",
   sources:[
     {name:"Public Procurement Information Portal (PPIP)", note:"Genuine county tenders are advertised on the public portal with a reference number and official submission channels — never via WhatsApp or personal M-PESA accounts.", url:"https://tenders.go.ke/"},
@@ -375,11 +415,14 @@ function reconcile(claim){
   });
   return bestScore>=2?best:null;
 }
+function claimFor(m){return lang==='sh'?(m.shClaim||m.swClaim):(lang==='sw'?m.swClaim:m.enClaim);}
+function unknownFor(m){return lang==='sh'?(m.shUnknown||m.unknownSw):(lang==='sw'?m.unknownSw:m.unknownEn);}
+function nextFor(m){return lang==='sh'?(m.shNext||m.nextSw):(lang==='sw'?m.nextSw:m.nextEn);}
 function verdictCard(claim,match){
   var v=match?match.verdict:'unverified';
   var conf=match?match.confidence:30;
   var cls=v;
-  var claimText=match?(lang==='sw'?match.swClaim:match.enClaim):claim;
+  var claimText=match?claimFor(match):claim;
   var html='<div class="verdictcard '+cls+'">';
   html+='<div class="claim">'+escapeHtml(claimText)+'</div>';
   html+='<span class="badge '+cls+'">'+T(v)+'</span>';
@@ -389,8 +432,8 @@ function verdictCard(claim,match){
     match.sources.forEach(function(s){
       html+='<a class="source" href="'+s.url+'" target="_blank" rel="noopener">'+escapeHtml(s.name)+'<small>'+escapeHtml(s.note)+'</small></a>';
     });
-    html+='<div class="sechead">'+T('unknown')+'</div><p class="hint">'+escapeHtml(lang==='sw'?match.unknownSw:match.unknownEn)+'</p>';
-    html+='<div class="sechead">'+T('next')+'</div><ul class="nextsteps">'+(lang==='sw'?match.nextSw:match.nextEn).map(function(n){return '<li>'+escapeHtml(n)+'</li>';}).join('')+'</ul>';
+    html+='<div class="sechead">'+T('unknown')+'</div><p class="hint">'+escapeHtml(unknownFor(match))+'</p>';
+    html+='<div class="sechead">'+T('next')+'</div><ul class="nextsteps">'+nextFor(match).map(function(n){return '<li>'+escapeHtml(n)+'</li>';}).join('')+'</ul>';
   } else {
     html+='<p class="hint" style="margin-top:10px">'+T('unvExp')+'</p>';
     html+='<div class="sechead">'+T('next')+'</div><ul class="nextsteps"><li>'+(lang==='sw'?'Tafuta tangazo rasmi kutoka chanzo rasmi kabla ya kusambaza.':'Look for an official notice or document from an official source before sharing.')+'</li><li>'+(lang==='sw'?'Rudisha ujumbe kwa VeriVoice ukiwa na viunganishi vya habari rasmi kwa ukaguzi zaidi.':'Send the message back to VeriVoice with links to official coverage for a deeper check.')+'</li></ul>';
