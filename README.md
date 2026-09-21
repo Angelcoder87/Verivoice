@@ -31,20 +31,14 @@ Every verdict returned by the live demo is checked against real, current sources
 
 ## Try it
 
-1. Open the **live demo** (below) on your phone or a phone-width browser.
+1. Open https://angelcoder87.github.io/Verivoice/ on your phone or a phone-width browser.
 2. Paste the claim from `demo-assets/demo_claim_county_budget.txt` and tap *Check this for me*.
 3. The pipeline runs end-to-end (typically 1–2 minutes): the request is queued, an AI agent researches the claim against authoritative Kenyan sources, and the bilingual verdict card appears — sources, confidence, next steps, caveats.
 4. Toggle EN/SW for the explanation language, then use *Share on WhatsApp* to send the verdict back where the claim came from.
 
 ## Contents of this repo
 
-- `app/` — **the working proof of concept** (mobile web app + backend functions + entity-triggered workflow, built on Base44) — see `app/ARCHITECTURE.md`
-- `prototype/` — static in-browser concept prototype (EN/SW/SH UI, screenshot OCR tab, safety routing) with pre-computed demo scenarios
-- `demo-assets/` — demo inputs (real verified claim + clearly-labelled simulated scam notice)
-- `docs/written-summary.md` — full written submission
-- `docs/pitch-deck.pdf` — pitch deck
-- `docs/demo-script.md` — demo video script
-- `docs/demo-video.md` — demo video link
+- `app/` — **the working proof of concept** (mobile web app + backend functions + entity-triggered workflow, built on Base44) 
 
 ## Links
 
