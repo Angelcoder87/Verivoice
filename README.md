@@ -2,13 +2,13 @@
 
 **Verify. Understand. Act.** — a multilingual civic information assistant for Kenya.
 
-> In Kenya, the information people act on arrives as voice notes and forwarded screenshots — in Sheng, Kiswahili, and English. VeriVoice lets anyone check it before they share it.
+> In Kenya, the information people act on arrives as voice notes and forwarded messages — in Sheng, Kiswahili, and English. VeriVoice lets anyone check it before they share it.
 
 **Core loop:** Receive → Understand → Verify → Explain → Share
 
-Submit information exactly as you received it — **voice note or text** — and VeriVoice transcribes it, extracts the main claims, retrieves evidence, and returns a plain-language verdict with sources, a confidence level, honest unknowns, and clear next steps you can act on. A shareable summary goes straight back to the group chat the message came from.
+Submit information exactly as you received it — **voice note or text** — and VeriVoice transcribes it, researches the main claims against live sources, and returns a plain-language verdict with sources, a confidence level, honest unknowns, and clear next steps you can act on. A shareable summary goes straight back to the group chat the message came from.
 
-> **PoC scope:** this proof of concept implements voice + text end-to-end. Screenshot/image checking is designed but deliberately out of scope for the sprint — see the roadmap in the written summary.
+> **PoC scope:** this proof of concept implements voice + text end-to-end, live. Screenshot checking and a full Sheng interface are explored in the companion static prototype (`prototype/`).
 
 ## Design principle
 
@@ -18,35 +18,39 @@ Submit information exactly as you received it — **voice note or text** — and
 
 - **Voice-first input** — no typing required
 - **English & Kiswahili**, Sheng tolerated generously
-- **Low bandwidth**: lightweight text-first responses
-- **Privacy**: no account needed; inputs processed, not retained
-- **Local relevance**: next steps reference real Kenyan institutions and hotlines
+- **Low bandwidth**: lightweight, no-framework web app; text-first responses
+- **Privacy**: no account needed; recordings used for transcription only, not retained
+- **Local relevance**: next steps reference real Kenyan institutions, portals and hotlines
 - **Safety**: claims touching violence or public health route to established support pathways
 
-## Pipeline
+## Live pipeline
 
-**Input → Transcription/OCR → Claim Extraction → Evidence Retrieval → AI Reconciliation → Verification Result → Explanation → Shareable Response**
+**Input → Transcription → Claim Extraction → Evidence Retrieval (live web research) → AI Reconciliation → Verdict → Bilingual Explanation → Share-back**
 
-## Contents of this repo
-
-- `docs/written-summary.md` — full written submission
-- `docs/pitch-deck.pdf` — 10-slide pitch deck
-- `docs/demo-script.md` — demo video script
-- `docs/demo-video.md` — demo video link
-- `app/` — working proof-of-concept source (mobile web app + backend functions + workflow, built on Base44) — see `app/ARCHITECTURE.md`
-- `demo-assets/` — demo inputs (real verified claim + clearly-labelled simulated scam notice)
-
-## Links
-
-- **Live demo (mobile web app):** https://base44.app/api/apps/6a9e4cb08678ebe6e78deea3/functions/verivoiceApp
-- **Demo video:** link in `docs/demo-video.md` (being recorded — added before submission)
+Every verdict returned by the live demo is checked against real, current sources at the moment you test it — nothing is canned.
 
 ## Try it
 
-1. Open the live demo on your phone (or a phone-width browser window).
+1. Open the **live demo** (below) on your phone or a phone-width browser.
 2. Paste the claim from `demo-assets/demo_claim_county_budget.txt` and tap *Check this for me*.
-3. The pipeline runs end-to-end (typically 1–2 minutes): the request is queued, an AI agent turn researches the claim against authoritative Kenyan sources, and the bilingual verdict card appears — with sources, confidence, next steps and caveats.
-4. Toggle EN/SW for the explanation language, and use *Share on WhatsApp* to send the verdict back to the chat the claim came from.
+3. The pipeline runs end-to-end (typically 1–2 minutes): the request is queued, an AI agent researches the claim against authoritative Kenyan sources, and the bilingual verdict card appears — sources, confidence, next steps, caveats.
+4. Toggle EN/SW for the explanation language, then use *Share on WhatsApp* to send the verdict back where the claim came from.
+
+## Contents of this repo
+
+- `app/` — **the working proof of concept** (mobile web app + backend functions + entity-triggered workflow, built on Base44) — see `app/ARCHITECTURE.md`
+- `prototype/` — static in-browser concept prototype (EN/SW/SH UI, screenshot OCR tab, safety routing) with pre-computed demo scenarios
+- `demo-assets/` — demo inputs (real verified claim + clearly-labelled simulated scam notice)
+- `docs/written-summary.md` — full written submission
+- `docs/pitch-deck.pdf` — pitch deck
+- `docs/demo-script.md` — demo video script
+- `docs/demo-video.md` — demo video link
+
+## Links
+
+- **Live demo (working pipeline):** https://base44.app/api/apps/6a9e4cb08678ebe6e78deea3/functions/verivoiceApp
+- **Concept prototype (static):** https://angelcoder87.github.io/Verivoice/
+- **Demo video:** link in `docs/demo-video.md` (added before submission)
 
 ---
 

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="VeriVoice — Verify. Understand. Act. A multilingual civic information assistant for Kenya.">
+<title>VeriVoice — Verify. Understand. Act.</title><link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo"><div class="mark">🔎</div><span>VeriVoice</span></div>
+    <div class="langtoggle"><button id="btnEn" class="on" onclick="setLang('en')">EN</button><button id="btnSw" onclick="setLang('sw')">SW</button><button id="btnSh" onclick="setLang('sh')">SH</button></div>
+  </header>
+  <p class="tagline" id="t_tagline">Verify. Understand. Act. — check it before you share it.</p>
+
+  <div class="card">
+    <h2 id="t_howtitle">How to use</h2>
+    <p class="hint" id="t_howtext">Send VeriVoice the information exactly as you received it — a voice note, typed text, or a screenshot. It transcribes, extracts the main claims, checks them against evidence, and returns a plain-language verdict with sources and next steps.</p>
+    <div class="try">
+      <button onclick="useExample(0)" id="ex0">Try: Sheng school-fee rumour</button>
+      <button onclick="useExample(1)" id="ex1">Try: county bursary claim</button>
+      <button onclick="useExample(2)" id="ex2">Try: WhatsApp tender notice</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab on" id="tabVoice" onclick="setTab('voice')">🎤 <span id="t_tabVoice">Voice</span></button>
+    <button class="tab" id="tabText" onclick="setTab('text')">✍️ <span id="t_tabText">Text</span></button>
+    <button class="tab" id="tabImg" onclick="setTab('img')">📷 <span id="t_tabImg">Screenshot</span></button>
+  </div>
+
+  <div class="card" id="paneVoice">
+    <div class="microw">
+      <button class="micbtn" id="micbtn" onclick="toggleMic()">🎤</button>
+    </div>
+    <p class="hint" style="text-align:center" id="t_michint">Tap the mic and speak (Sheng and Kiswahili welcome). Live transcription uses your browser's speech recognition — Chrome works best. You can also paste or edit the transcript below.</p>
+    <div class="transcript"><textarea id="voiceText" placeholder="Your words will appear here…" oninput="syncText()"></textarea></div>
+  </div>
+
+  <div class="card" id="paneText" style="display:none">
+    <textarea id="plainText" placeholder="Paste or type the message you received…" oninput="syncText()"></textarea>
+  </div>
+
+  <div class="card" id="paneImg" style="display:none">
+    <div class="drop" id="drop" onclick="document.getElementById('file').click()">
+      <span id="t_drop">📷 Tap to choose a screenshot of the message</span>
+    </div>
+    <input type="file" id="file" accept="image/*" style="display:none" onchange="handleImage(event)">
+    <p class="ocrprogress" id="ocrprogress"></p>
+    <textarea id="imgText" style="display:none;margin-top:10px" placeholder="Text read from the image (you can correct it)…" oninput="syncText()"></textarea>
+  </div>
+
+  <button class="btn" id="checkBtn" onclick="runCheck()" disabled>🔍 <span id="t_checkbtn">Check this information</span></button>
+  <p class="hint" style="text-align:center" id="t_privacy">No account needed. Nothing you send is stored.</p>
+
+  <div class="pipeline" id="pipeline">
+    <div class="step" id="ps1"><span class="tick"></span> <span id="t_ps1">Transcription / text extraction</span></div>
+    <div class="step" id="ps2"><span class="tick"></span> <span id="t_ps2">Claim extraction</span></div>
+    <div class="step" id="ps3"><span class="tick"></span> <span id="t_ps3">Evidence retrieval</span></div>
+    <div class="step" id="ps4"><span class="tick"></span> <span id="t_ps4">AI reconciliation</span></div>
+    <div class="step" id="ps5"><span class="tick"></span> <span id="t_ps5">Preparing your verdict cards</span></div>
+  </div>
+
+  <div id="safety" class="safety" style="display:none">
+    <h3 id="t_safetyh">⚠️ This message touches safety</h3>
+    <p id="t_safetyp"></p>
+  </div>
+
+  <div id="results"></div>
+
+  <div class="card" id="sharecard" style="display:none">
+    <h2 id="t_shareh">Share back to the group</h2>
+    <div class="sharebox" id="sharebox"></div>
+    <button class="btn ghost" id="copybtn" onclick="copySummary()">📋 <span id="t_copy">Copy summary card</span></button>
+    <button class="btn ghost" id="sharebtn" onclick="nativeShare()" style="display:none">📤 <span id="t_share">Share…</span></button>
+  </div>
+
+  <footer id="t_foot">
+    VeriVoice is an assistant, never an oracle. Verdicts are evidence summaries with confidence levels — when evidence is thin, it says so. This proof of concept runs fully in your browser with a demo evidence base covering the demo scenarios; the production design uses AI reconciliation against live, named sources. No data is retained.
+  </footer>
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>
