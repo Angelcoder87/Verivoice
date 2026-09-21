@@ -418,6 +418,11 @@ function reconcile(claim){
 function claimFor(m){return lang==='sh'?(m.shClaim||m.swClaim):(lang==='sw'?m.swClaim:m.enClaim);}
 function unknownFor(m){return lang==='sh'?(m.shUnknown||m.unknownSw):(lang==='sw'?m.unknownSw:m.unknownEn);}
 function nextFor(m){return lang==='sh'?(m.shNext||m.nextSw):(lang==='sw'?m.nextSw:m.nextEn);}
+function fallbackNext(){
+  if(lang==='sw') return ["Tafuta tangazo rasmi au waraka kutoka chanzo rasmi kabla ya kusambaza.","Rudisha ujumbe kwa VeriVoice ukiwa na viunganishi vya habari rasmi kwa ukaguzi zaidi."];
+  if(lang==='sh') return ["Tafuta notice rasmi ama doc kutoka official source kabla ushare.","Rudisha ujumbe kwa VeriVoice ukiwa na links za official coverage kwa deep check."];
+  return ["Look for an official notice or document from an official source before sharing.","Send the message back to VeriVoice with links to official coverage for a deeper check."];
+}
 function verdictCard(claim,match){
   var v=match?match.verdict:'unverified';
   var conf=match?match.confidence:30;
@@ -436,7 +441,7 @@ function verdictCard(claim,match){
     html+='<div class="sechead">'+T('next')+'</div><ul class="nextsteps">'+nextFor(match).map(function(n){return '<li>'+escapeHtml(n)+'</li>';}).join('')+'</ul>';
   } else {
     html+='<p class="hint" style="margin-top:10px">'+T('unvExp')+'</p>';
-    html+='<div class="sechead">'+T('next')+'</div><ul class="nextsteps"><li>'+(lang==='sw'?'Tafuta tangazo rasmi kutoka chanzo rasmi kabla ya kusambaza.':'Look for an official notice or document from an official source before sharing.')+'</li><li>'+(lang==='sw'?'Rudisha ujumbe kwa VeriVoice ukiwa na viunganishi vya habari rasmi kwa ukaguzi zaidi.':'Send the message back to VeriVoice with links to official coverage for a deeper check.')+'</li></ul>';
+    html+='<div class="sechead">'+T('next')+'</div><ul class="nextsteps">'+fallbackNext().map(function(n){return '<li>'+escapeHtml(n)+'</li>';}).join('')+'</ul>';
   }
   html+='</div>';
   return {html:html, verdict:v, claim:claimText};
