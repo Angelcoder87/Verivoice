@@ -12,7 +12,7 @@ Submit information exactly as you received it — **voice note or text** — and
 
 ## Design principle
 
-**An assistant, never an oracle.** VeriVoice summarises evidence with sources and confidence levels. When evidence is thin, it says "Unverified" in plain words — *Hakuna ushahidi wa kutosha* — instead of guessing. Trust is built by showing your work.
+**An assistant** VeriVoice summarises evidence with sources and confidence levels. When evidence is thin, it says "Unverified" in plain words — *Hakuna ushahidi wa kutosha* — instead of guessing. Trust is built by showing your work.
 
 ## Built for real conditions
 
@@ -48,9 +48,9 @@ Every verdict returned by the live demo is checked against real, current sources
 
 ## Links
 
-- **Live demo (working pipeline):** https://base44.app/api/apps/6a9e4cb08678ebe6e78deea3/functions/verivoiceApp
+- **Live demo (working pipeline):** https://angelcoder87.github.io/Verivoice/
 - **Concept prototype (static):** https://angelcoder87.github.io/Verivoice/
-- **Demo video:** link in `docs/demo-video.md` (added before submission)
+- **Demo video:** 
 
 ---
 
