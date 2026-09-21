@@ -15,7 +15,7 @@ Submit information exactly as you received it — **voice note, text, or screens
 ## Built for real conditions
 
 - **Voice-first input** — no typing required
-- **English & Kiswahili**, Sheng tolerated generously
+- **English, Kiswahili & Sheng** — the interface and verdicts come in all three (EN / SW / SH toggle); mixed-register and Sheng input is tolerated generously
 - **Low bandwidth**: lightweight text-first responses
 - **Privacy**: no account needed; inputs processed, not retained
 - **Local relevance**: next steps reference real Kenyan institutions and hotlines

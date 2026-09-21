@@ -37,7 +37,7 @@ VeriVoice **must never present itself as an all-knowing authority on truth**. Ve
 ## Why it fits the real conditions it will live in
 
 - **Low bandwidth**: responses are text-first and lightweight; voice input is uploaded once and processed server-side; images are downscaled; the share-back card is a few lines of text, not a video.
-- **Multilingual by default**: input and output in English and Kiswahili, with Sheng tolerated generously — people do not switch registers to verify a rumour.
+- **Multilingual by default**: input and output in English and Kiswahili, with the PoC also offering a full Sheng interface option (EN / SW / SH) and mixed-register input tolerated generously — people do not switch registers to verify a rumour.
 - **Accessibility**: voice-first input means a user never has to type; large text and simple language serve low-literacy users.
 - **Privacy**: no accounts required in the PoC; recordings and images are processed and not retained; nothing is shared onward without an explicit action by the user.
 - **Local relevance**: verdicts and next steps reference Kenyan institutions, hotlines, and official channels — not generic "contact the authorities".
