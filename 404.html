@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="VeriVoice — Verify. Understand. Act. A multilingual civic information assistant for Kenya.">
+<title>VeriVoice — Verify. Understand. Act.</title>
+<style>
+:root{
+  --bg:#0d1520; --card:#14202e; --card2:#1b2a3b; --ink:#eaf1f7; --muted:#9db2c4;
+  --accent:#22c55e; --accent-ink:#06130b; --line:#28394d;
+  --supported:#22c55e; --disputed:#ef4444; --misleading:#f59e0b; --unverified:#94a3b8;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.55;font-size:17px}
+.wrap{max-width:760px;margin:0 auto;padding:16px 14px 60px}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0 14px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.35rem;letter-spacing:.2px}
+.logo .mark{width:38px;height:38px;border-radius:10px;background:var(--accent);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.tagline{color:var(--muted);font-size:.95rem;margin-top:-14px;margin-bottom:18px}
+.langtoggle{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;flex-shrink:0}
+.langtoggle button{background:transparent;color:var(--muted);border:0;padding:7px 14px;font-weight:700;cursor:pointer;font-size:.9rem}
+.langtoggle button.on{background:var(--accent);color:var(--accent-ink)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+h2{font-size:1.02rem;margin-bottom:10px}
+.tabs{display:flex;gap:8px;margin-bottom:14px}
+.tab{flex:1;background:transparent;border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:10px 6px;cursor:pointer;font-size:.92rem;font-weight:600;font-family:inherit}
+.tab.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.hint{color:var(--muted);font-size:.85rem;margin-top:8px}
+textarea{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:10px;color:var(--ink);padding:12px;font-size:1rem;font-family:inherit;min-height:110px;resize:vertical}
+textarea:focus{outline:2px solid var(--accent)}
+.btn{display:block;width:100%;background:var(--accent);color:var(--accent-ink);border:0;border-radius:12px;padding:15px;font-size:1.05rem;font-weight:800;cursor:pointer;font-family:inherit;margin-top:6px}
+.btn:disabled{opacity:.55;cursor:wait}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink);font-weight:600;margin-top:10px}
+.microw{display:flex;align-items:center;gap:10px;justify-content:center;flex-wrap:wrap}
+.micbtn{width:92px;height:92px;border-radius:50%;border:2px solid var(--accent);background:var(--card2);color:var(--ink);font-size:2.2rem;cursor:pointer}
+.micbtn.rec{background:#ef4444;border-color:#ef4444;animation:pulse 1.2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(239,68,68,.5)}70%{box-shadow:0 0 0 22px rgba(239,68,68,0)}100%{box-shadow:0 0 0 0 rgba(239,68,68,0)}}
+.transcript{margin-top:12px}
+.drop{border:2px dashed var(--line);border-radius:12px;padding:26px;text-align:center;color:var(--muted);cursor:pointer}
+.drop.hasimg{padding:10px}
+.drop img{max-width:100%;border-radius:8px}
+.ocrprogress{color:var(--muted);font-size:.9rem;margin-top:10px}
+.pipeline{display:none;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:14px}
+.pipeline .step{display:flex;align-items:center;gap:10px;padding:7px 0;color:var(--muted);font-size:.95rem}
+.pipeline .step.done{color:var(--ink)}
+.pipeline .step .tick{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);display:inline-flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0}
+.pipeline .step.done .tick{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.safety{background:#2a1518;border:1px solid #7f1d1d;border-radius:12px;padding:14px;margin-bottom:14px}
+.safety h3{font-size:.98rem;margin-bottom:6px;color:#fca5a5}
+.safety p{font-size:.95rem}
+.verdictcard{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--unverified);border-radius:12px;padding:16px;margin-bottom:14px}
+.verdictcard.supported{border-left-color:var(--supported)}
+.verdictcard.disputed{border-left-color:var(--disputed)}
+.verdictcard.misleading{border-left-color:var(--misleading)}
+.verdictcard.unverified{border-left-color:var(--unverified)}
+.claim{font-size:1.05rem;font-weight:600;margin-bottom:10px}
+.badge{display:inline-block;padding:4px 12px;border-radius:999px;font-weight:800;font-size:.85rem;letter-spacing:.4px;margin-bottom:10px}
+.badge.supported{background:rgba(34,197,94,.16);color:#6ee7a0}
+.badge.disputed{background:rgba(239,68,68,.16);color:#fda4a4}
+.badge.misleading{background:rgba(245,158,11,.16);color:#fcd34d}
+.badge.unverified{background:rgba(148,163,184,.16);color:#cbd5e1}
+.sechead{font-size:.82rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin:12px 0 6px}
+.source{display:block;background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;color:var(--ink);text-decoration:none;font-size:.95rem}
+.source small{color:var(--muted);display:block}
+.confbar{height:8px;background:var(--card2);border-radius:999px;overflow:hidden;margin:6px 0 2px}
+.confbar span{display:block;height:100%;background:var(--accent)}
+.nextsteps li{margin:4px 0 4px 18px;font-size:.97rem}
+.sharebox{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px;font-size:.93rem;white-space:pre-wrap;display:none}
+footer{color:var(--muted);font-size:.82rem;margin-top:26px;border-top:1px solid var(--line);padding-top:14px}
+a{color:#7dd3fc}
+.try{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.try button{background:var(--card2);border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:6px 12px;font-size:.8rem;cursor:pointer;font-family:inherit}
+.try button:hover{color:var(--ink);border-color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo"><div class="mark">🔎</div><span>VeriVoice</span></div>
+    <div class="langtoggle"><button id="btnEn" class="on" onclick="setLang('en')">EN</button><button id="btnSw" onclick="setLang('sw')">SW</button></div>
+  </header>
+  <p class="tagline" id="t_tagline">Verify. Understand. Act. — check it before you share it.</p>
+
+  <div class="card">
+    <h2 id="t_howtitle">How to use</h2>
+    <p class="hint" id="t_howtext">Send VeriVoice the information exactly as you received it — a voice note, typed text, or a screenshot. It transcribes, extracts the main claims, checks them against evidence, and returns a plain-language verdict with sources and next steps.</p>
+    <div class="try">
+      <button onclick="useExample(0)" id="ex0">Try: Sheng school-fee rumour</button>
+      <button onclick="useExample(1)" id="ex1">Try: county bursary claim</button>
+      <button onclick="useExample(2)" id="ex2">Try: WhatsApp tender notice</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab on" id="tabVoice" onclick="setTab('voice')">🎤 <span id="t_tabVoice">Voice</span></button>
+    <button class="tab" id="tabText" onclick="setTab('text')">✍️ <span id="t_tabText">Text</span></button>
+    <button class="tab" id="tabImg" onclick="setTab('img')">📷 <span id="t_tabImg">Screenshot</span></button>
+  </div>
+
+  <div class="card" id="paneVoice">
+    <div class="microw">
+      <button class="micbtn" id="micbtn" onclick="toggleMic()">🎤</button>
+    </div>
+    <p class="hint" style="text-align:center" id="t_michint">Tap the mic and speak (Sheng and Kiswahili welcome). Live transcription uses your browser's speech recognition — Chrome works best. You can also paste or edit the transcript below.</p>
+    <div class="transcript"><textarea id="voiceText" placeholder="Your words will appear here…" oninput="syncText()"></textarea></div>
+  </div>
+
+  <div class="card" id="paneText" style="display:none">
+    <textarea id="plainText" placeholder="Paste or type the message you received…" oninput="syncText()"></textarea>
+  </div>
+
+  <div class="card" id="paneImg" style="display:none">
+    <div class="drop" id="drop" onclick="document.getElementById('file').click()">
+      <span id="t_drop">📷 Tap to choose a screenshot of the message</span>
+    </div>
+    <input type="file" id="file" accept="image/*" style="display:none" onchange="handleImage(event)">
+    <p class="ocrprogress" id="ocrprogress"></p>
+    <textarea id="imgText" style="display:none;margin-top:10px" placeholder="Text read from the image (you can correct it)…" oninput="syncText()"></textarea>
+  </div>
+
+  <button class="btn" id="checkBtn" onclick="runCheck()" disabled>🔍 <span id="t_checkbtn">Check this information</span></button>
+  <p class="hint" style="text-align:center" id="t_privacy">No account needed. Nothing you send is stored.</p>
+
+  <div class="pipeline" id="pipeline">
+    <div class="step" id="ps1"><span class="tick"></span> <span id="t_ps1">Transcription / text extraction</span></div>
+    <div class="step" id="ps2"><span class="tick"></span> <span id="t_ps2">Claim extraction</span></div>
+    <div class="step" id="ps3"><span class="tick"></span> <span id="t_ps3">Evidence retrieval</span></div>
+    <div class="step" id="ps4"><span class="tick"></span> <span id="t_ps4">AI reconciliation</span></div>
+    <div class="step" id="ps5"><span class="tick"></span> <span id="t_ps5">Preparing your verdict cards</span></div>
+  </div>
+
+  <div id="safety" class="safety" style="display:none">
+    <h3 id="t_safetyh">⚠️ This message touches safety</h3>
+    <p id="t_safetyp"></p>
+  </div>
+
+  <div id="results"></div>
+
+  <div class="card" id="sharecard" style="display:none">
+    <h2 id="t_shareh">Share back to the group</h2>
+    <div class="sharebox" id="sharebox"></div>
+    <button class="btn ghost" id="copybtn" onclick="copySummary()">📋 <span id="t_copy">Copy summary card</span></button>
+    <button class="btn ghost" id="sharebtn" onclick="nativeShare()" style="display:none">📤 <span id="t_share">Share…</span></button>
+  </div>
+
+  <footer id="t_foot">
+    VeriVoice is an assistant, never an oracle. Verdicts are evidence summaries with confidence levels — when evidence is thin, it says so. This proof of concept runs fully in your browser with a demo evidence base covering the demo scenarios; the production design uses AI reconciliation against live, named sources. No data is retained.
+  </footer>
+</div>
+
+<script>
+/* ---------- i18n ---------- */
+var L = {
+  en:{
+    tagline:"Verify. Understand. Act. — check it before you share it.",
+    howtitle:"How to use",
+    howtext:"Send VeriVoice the information exactly as you received it — a voice note, typed text, or a screenshot. It transcribes, extracts the main claims, checks them against evidence, and returns a plain-language verdict with sources and next steps.",
+    tabVoice:"Voice",tabText:"Text",tabImg:"Screenshot",
+    micIdle:"Tap the mic and speak (Sheng and Kiswahili welcome). Live transcription uses your browser's speech recognition — Chrome works best. You can also paste or edit the transcript below.",
+    micRec:"Listening… speak now. Tap again to stop.",
+    micNo:"Your browser does not support live speech recognition. Use Chrome, or type / paste the message in the Text tab — everything else works the same.",
+    drop:"📷 Tap to choose a screenshot of the message",
+    check:"Check this information",
+    privacy:"No account needed. Nothing you send is stored.",
+    ps1:"Transcription / text extraction",ps2:"Claim extraction",ps3:"Evidence retrieval",ps4:"AI reconciliation",ps5:"Preparing your verdict cards",
+    safetyH:"⚠️ This message touches safety",
+    safetyP:"Because this message may touch violence, public health, or public safety, VeriVoice routes you to established support pathways before anything else. Kenya Police: 999 or 112. DCI Hotline ya Uhalifu: 0800 722 203. Gender-Based Violence helpline: 1195. NCIC (hate speech and ethnic incitement): 4157.",
+    claimTitle:"Main claims found",
+    supported:"SUPPORTED",disputed:"DISPUTED",misleading:"MISLEADING",unverified:"UNVERIFIED",
+    evidence:"Evidence",unknown:"What we do not know",next:"Next steps you can act on",confidence:"Confidence",
+    unvExp:"We could not find enough evidence to check this claim. Hakuna ushahidi wa kutosha. Do not spread it until it is confirmed by a source you trust.",
+    noClaims:"No clear claims were found in this message. Try sending the message again in the words you received it.",
+    shareH:"Share back to the group",
+    copy:"Copy summary card",share:"Share…",
+    summaryTitle:"VeriVoice check — summary",
+    summaryBy:"Checked with VeriVoice 🔎",
+    ex:["Try: Sheng school-fee rumour","Try: county bursary claim","Try: WhatsApp tender notice"],
+    ocr:"Reading the image…",
+    ocrDone:"Text read from the image. You can correct it below.",
+    processing:"Checking…",
+    copied:"Copied ✓",
+    noClaims2:"No clear claims were found in this message."
+  },
+  sw:{
+    tagline:"Thibitisha. Elewa. Tenda. — hakiki kabla ya kushiriki.",
+    howtitle:"Jinsi ya kutumia",
+    howtext:"Tuma VeriVoice taarifa kama ulivyopokea — sauti, maandishi, au picha. Inahusisha kuandika sauti, kutoza madai, kukagua ushahidi, na kukupa hukumu kwa lugha rahisi pamoja na vyanzo na hatua zinazofuata.",
+    tabVoice:"Sauti",tabText:"Maandishi",tabImg:"Picha",
+    micIdle:"Bonyeza kipaza sauti na ongea (Sheng na Kiswahili karibuni). Uhakiki wa sauti hufanya kazi vizuri kwenye Chrome. Unaweza pia kuandika au kuweka maandishi hapa chini.",
+    micRec:"Inasikiliza… ongea sasa. Bonyeza tena kuacha.",
+    micNo:"Kivinjari chako hakiungi mkono uhakiki wa sauti moja kwa moja. Tumia Chrome, au andika ujumbe kwenye kichupo cha Maandishi.",
+    drop:"📷 Bonyeza kuchagua picha ya ujumbe",
+    check:"Hakiki taarifa hii",
+    privacy:"Hakuna akaunti inayohitajika. Hakuna kitu tunachohifadhi.",
+    ps1:"Kuandika sauti / kutoa maandishi",ps2:"Kutoza madai",ps3:"Kutafuta ushahidi",ps4:"Ulinganishaji wa AI",ps5:"Kuandaa kadi za hukumu",
+    safetyH:"⚠️ Ujumbe huu unahusu usalama",
+    safetyP:"Kwa sababu ujumbe huu unaweza kuhusu vurugu, afya ya umma, au usalama wa umma, VeriVoice inakuongoza kwenye njia za msaada zilizothibitishwa. Polisi: 999 au 112. DCI Hotline ya Uhalifu: 0800 722 203. Msaada wa ukatili wa kijinsia: 1195. Kuripoti uchuki: 4157.",
+    claimTitle:"Madai makuu yaliyopatikana",
+    supported:"IMEHAKIKIWA",disputed:"IMEKANUSHWA",misleading:"INADANGANYA",unverified:"HAIJATHIBITISHWA",
+    evidence:"Ushahidi",unknown:"Tunachokosa kujua",next:"Hatua unazoweza kuchukua",confidence:"Uhakika",
+    unvExp:"Hakuna ushahidi wa kutosha wa kukagua dai hili. Usiendelee kusambaza hadi uthibitishwe na chanzo unachokiamini.",
+    noClaims:"Hakuna madai makuu yaliyopatikana kwenye ujumbe huu. Jaribu kutuma tena kwa maneno uliyopokea.",
+    shareH:"Shiriki kwenye kikundi",
+    copy:"Nakili kadi ya muhtasari",share:"Shiriki…",
+    summaryTitle:"Ukaguzi wa VeriVoice — muhtasari",
+    summaryBy:"Imekaguliwa kwa VeriVoice 🔎",
+    ex:["Jaribu: uvumi wa ada za shule (Sheng)","Jaribu: dai la bursary ya kaunti","Jaribu: tangazo la tender la WhatsApp"],
+    ocr:"Inasoma picha…",
+    ocrDone:"Maandishi yamependwa kutoka picha. Unaweza kuyasahihisha hapa chini.",
+    processing:"Inakagua…",
+    copied:"Imenakiliwa ✓",
+    noClaims2:"Hakuna madai makuu yaliyopatikana."
+  }
+};
+var lang='en';
+function T(k){return L[lang][k];}
+function setLang(l){
+  lang=l;
+  document.getElementById('btnEn').className=l==='en'?'on':'';
+  document.getElementById('btnSw').className=l==='sw'?'on':'';
+  document.getElementById('t_tagline').textContent=T('tagline');
+  document.getElementById('t_howtitle').textContent=T('howtitle');
+  document.getElementById('t_howtext').textContent=T('howtext');
+  document.getElementById('t_tabVoice').textContent=T('tabVoice');
+  document.getElementById('t_tabText').textContent=T('tabText');
+  document.getElementById('t_tabImg').textContent=T('tabImg');
+  document.getElementById('t_michint').textContent=rec?T('micRec'):T('micIdle');
+  document.getElementById('t_drop').textContent=T('drop');
+  document.getElementById('t_checkbtn').textContent=T('check');
+  document.getElementById('t_privacy').textContent=T('privacy');
+  for(var i=1;i<=5;i++) document.getElementById('t_ps'+i).textContent=T('ps'+i);
+  document.getElementById('t_safetyh').textContent=T('safetyH');
+  document.getElementById('t_safetyp').textContent=T('safetyP');
+  document.getElementById('t_shareh').textContent=T('shareH');
+  document.getElementById('t_copy').textContent=T('copy');
+  document.getElementById('t_share').textContent=T('share');
+  document.getElementById('t_foot').textContent=T('foot');
+  for(var j=0;j<3;j++) document.getElementById('ex'+j).textContent=T('ex')[j];
+}
+
+/* ---------- tabs & input sync ---------- */
+var tab='voice';
+function setTab(t){
+  tab=t;
+  ['Voice','Text','Img'].forEach(function(n){
+    document.getElementById('pane'+n).style.display=(n.toLowerCase()===t)?'block':'none';
+    document.getElementById('tab'+n).className='tab'+(n.toLowerCase()===t?' on':'');
+  });
+}
+function activeText(){return document.getElementById(tab==='voice'?'voiceText':(tab==='text'?'plainText':'imgText'));}
+function syncText(){
+  document.getElementById('checkBtn').disabled=activeText().value.trim().length===0;
+}
+
+/* ---------- demo examples ---------- */
+var EXAMPLES=[
+ "Mkuu, skulz za county zimeanza ada mpya kuanzia next term. Watoto wanalazimika kulipia elfu tatu kabla hawajarudi. Nimetuma voice note kwa group tuone kama ni true ama ni con.",
+ "I heard the county has set aside KSh 2 billion for bursaries this year and every student in the ward will get KSh 30,000. They said applications close on Friday at the chief's office.",
+ "TENDER NOTICE!! County Government invites bids for construction of Gikomba market Phase 2. To apply, send KSh 5,000 registration fee via M-PESA to the procurement officer and forward your documents to this WhatsApp number. Deadline tomorrow."
+];
+function useExample(i){
+  var el=document.getElementById('plainText');
+  el.value=EXAMPLES[i];
+  setTab('text');
+  syncText();
+}
+
+/* ---------- voice ---------- */
+var rec=null, recognizing=false;
+function toggleMic(){
+  if(recognizing){try{rec.stop();}catch(e){} return;}
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){alert(T('micNo'));return;}
+  rec=new SR();
+  rec.lang='sw-KE'; rec.interimResults=true; rec.continuous=true;
+  rec.onstart=function(){recognizing=true;document.getElementById('micbtn').className='micbtn rec';document.getElementById('t_michint').textContent=T('micRec');};
+  rec.onend=function(){recognizing=false;document.getElementById('micbtn').className='micbtn';document.getElementById('t_michint').textContent=T('micIdle');};
+  rec.onresult=function(e){
+    var s='';
+    for(var i=0;i<e.results.length;i++){s+=e.results[i][0].transcript;}
+    document.getElementById('voiceText').value=s; syncText();
+  };
+  rec.onerror=rec.onend;
+  try{rec.start();}catch(e){}
+}
+
+/* ---------- image OCR ---------- */
+function handleImage(ev){
+  var f=ev.target.files[0]; if(!f) return;
+  var drop=document.getElementById('drop');
+  drop.className='drop hasimg';
+  drop.innerHTML='<img src="'+URL.createObjectURL(f)+'" alt="screenshot">';
+  var prog=document.getElementById('ocrprogress');
+  prog.textContent=T('ocr');
+  var s=document.createElement('script');
+  s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
+  s.onload=function(){
+    Tesseract.recognize(f,'eng').then(function(r){
+      var txt=(r.data.text||'').trim();
+      prog.textContent=T('ocrDone');
+      var box=document.getElementById('imgText');
+      box.style.display='block';
+      box.value=txt;
+      syncText();
+    }).catch(function(){prog.textContent='OCR unavailable — type the message in the Text tab.';});
+  };
+  s.onerror=function(){prog.textContent='OCR could not load — type the message in the Text tab.';};
+  document.head.appendChild(s);
+}
+
+/* ---------- evidence base (demo scenarios; production: AI reconciliation against live sources) ---------- */
+var EVIDENCE=[
+ {
+  keywords:["ada","school fee","school fees","ada mpya","skulz","shule","term","watoto","lipia","elfu tatu","registration fee","schools","county schools","kabla"],
+  verdict:"disputed", confidence:72,
+  swClaim:"Kaunti imeanza ada mpya kwenye shule za kaunti kuanzia muhula ujao; watoto watachapishwa KSh 3,000 kabla ya kurudi.",
+  enClaim:"County schools have introduced a new fee starting next term, and children must pay KSh 3,000 before returning.",
+  sources:[
+    {name:"Ministry of Education — public school fee guidelines", note:"Public day schools follow national fee guidelines; no county circular announces a KSh 3,000 'return fee'.", url:"https://www.education.go.ke/"},
+    {name:"County Education Office", note:"Confirm any fee change directly with the sub-county director of education before paying anything.", url:"https://www.education.go.ke/"}
+  ],
+  unknownEn:"We do not have the original circular the voice note refers to — no document has circulated. A school-specific request is possible, but no county-wide fee change is on record.",
+  unknownSw:"Hatuna waraka rasmi unaotajwa kwa sauti hii. Huwezekani kunaombi la shule fulani, lakini hakuna mabadiliko rasmi ya ada ya kaunti kwenye rekodi.",
+  nextEn:["Do not pay any 'registration' or 'return' fee before confirming with the school head and the sub-county education office.","Ask the sender for the written circular — a real fee change comes with a document, not a voice note.","Report fee-related extortion to the Ministry of Education."],
+  nextSw:["Usilipe ada yoyote ya 'usajili' kabla ya kuthibitisha na mkuu wa shule na ofisi ya elimu ya kaunti.","Omba mtumaji waraka rasmi — mabadiliko halali ya ada huja na waraka, si sauti pekee.","Ripoti unyonyaji wa ada kwa Wizara ya Elimu."]
+ },
+ {
+  keywords:["bursary","bursaries","scholarship","ksh 2 billion","bilioni mbili","ksh 30,000","elfu thelathini","every student","ward","applications close","chief"],
+  verdict:"misleading", confidence:64,
+  enClaim:"The county has set aside KSh 2 billion for bursaries and every student in the ward will get KSh 30,000, with applications closing Friday at the chief's office.",
+  swClaim:"Kaunti imeweka akiba ya KSh bilioni 2 kwa bursary; kila mwanafunzi wa kata atapata KSh 30,000, maombi yafunguki Ijumaa ofisini kwa chief.",
+  sources:[
+    {name:"County budget estimates (County Assembly records)", note:"The county's bursary fund is real but smaller than claimed, and is disbursed through ward bursary committees with published criteria — not a flat KSh 30,000 for every student.", url:"https://www.parliament.go.ke/"},
+    {name:"Ward bursary committee / MCA office", note:"Bursary applications go to the ward committee under a public notice — not at the chief's office and not by a WhatsApp deadline.", url:"https://www.cog.go.ke/"}
+  ],
+  unknownEn:"We could not verify the KSh 2 billion figure or the Friday deadline against any public notice. Amounts per student vary by need and by ward.",
+  unknownSw:"Hatuwezi kuthibitisha kiasi cha KSh bilioni 2 wala mwisho wa Ijumaa dhidi ya tangazo rasmi. Viwango kwa mwanafunzi hutofautiana na kata.",
+  nextEn:["Confirm the real bursary window and criteria at your ward bursary committee or MCA's office — applying there is free.","Never pay anyone to 'register' a bursary application; legitimate applications cost nothing.","Ask for the public notice reference before acting on any deadline."],
+  nextSw:["Thibitisha kipindi halali cha bursary na kamati ya kata au ofisi ya MCA — maombi halali ni bila malipo.","Usilipe mtu yeyote 'kuandikisha' maombi ya bursary; maombi halali hayana gharama.","Omba namba ya tangazo rasmi kabla ya kufuata mwisho wowote wa muda."]
+ },
+ {
+  keywords:["tender","tender notice","bids","bid","procurement","gikomba","phase 2","mpesa","m-pesa","registration fee","procurement officer","whatsapp","deadline tomorrow","construction","market"],
+  verdict:"disputed", confidence:85,
+  enClaim:"A county tender for Gikomba market Phase 2 requires a KSh 5,000 M-PESA 'registration fee' sent to a procurement officer via WhatsApp.",
+  swClaim:"Tender ya kaunti ya soko la Gikomba Awamu ya 2 inahitaji 'ada ya usajili' ya KSh 5,000 kupitia M-PESA kwa ofisa wa ununuzi kwa WhatsApp.",
+  sources:[
+    {name:"Public Procurement Information Portal (PPIP)", note:"Genuine county tenders are advertised on the public portal with a reference number and official submission channels — never via WhatsApp or personal M-PESA accounts.", url:"https://tenders.go.ke/"},
+    {name:"Public Procurement Regulatory Authority (PPRA)", note:"Asking bidders for a 'registration fee' paid to a personal number is not part of any lawful procurement process.", url:"https://www.ppra.go.ke/"}
+  ],
+  unknownEn:"We could not find any Gikomba Phase 2 tender on the public portal matching this notice. That, plus payment to a personal number, matches a known fraud pattern.",
+  unknownSw:"Hatupati tender yoyote ya Gikomba Awamu ya 2 kwenye lango la umma inayolingana. Pamoja na malipo kwa namba binafsi, hii inafanana na ulaghai unaojulikana.",
+  nextEn:["Check tenders.go.ke before sending any money — if it is not on the portal, it is not a tender.","Report the number to the DCI Hotline ya Uhalifu: 0800 722 203 and warn the group.","Never send M-PESA to individuals for public tenders; official fees go to county paybill accounts with receipts."],
+  nextSw:["Kagua tenders.go.ke kabla ya kutuma pesa — kama haipo kwenye lango, si tender halali.","Ripoti namba hiyo kwa DCI Hotline ya Uhalifu: 0800 722 203 na onya kikundi.","Usitume M-PESA kwa watu binafsi kwa tenda za umma; malipo halali huenda kwa paybill ya kaunti yenye risiti."]
+ }
+];
+var SAFETY_WORDS=["kill","waua","kuua","attack","shambulio","mob justice","burn","choma","violence","vurugu","rape","shoot","riot","vita","election","uchaguzi","vaccine","chanjo","covid","ebola","cholera","kipindupindu","suicide","abuse","ukatili"];
+
+/* ---------- claim extraction + reconciliation ---------- */
+function extractClaims(text){
+  var parts=text.replace(/\s+/g,' ').split(/(?<=[.!?])\s+/).map(function(s){return s.trim();}).filter(function(s){return s.length>25;});
+  if(parts.length===0) parts=[text.trim()];
+  return parts.slice(0,4);
+}
+function reconcile(claim){
+  var c=' '+claim.toLowerCase()+' ';
+  var best=null,bestScore=0;
+  EVIDENCE.forEach(function(e){
+    var score=0;
+    e.keywords.forEach(function(k){
+      if(c.indexOf(k)>=0) score++;
+    });
+    if(score>bestScore){bestScore=score;best=e;}
+  });
+  return bestScore>=2?best:null;
+}
+function verdictCard(claim,match){
+  var v=match?match.verdict:'unverified';
+  var conf=match?match.confidence:30;
+  var cls=v;
+  var claimText=match?(lang==='sw'?match.swClaim:match.enClaim):claim;
+  var html='<div class="verdictcard '+cls+'">';
+  html+='<div class="claim">'+escapeHtml(claimText)+'</div>';
+  html+='<span class="badge '+cls+'">'+T(v)+'</span>';
+  html+='<div class="sechead">'+T('confidence')+' · '+conf+'%</div><div class="confbar"><span style="width:'+conf+'%"></span></div>';
+  if(match){
+    html+='<div class="sechead">'+T('evidence')+'</div>';
+    match.sources.forEach(function(s){
+      html+='<a class="source" href="'+s.url+'" target="_blank" rel="noopener">'+escapeHtml(s.name)+'<small>'+escapeHtml(s.note)+'</small></a>';
+    });
+    html+='<div class="sechead">'+T('unknown')+'</div><p class="hint">'+escapeHtml(lang==='sw'?match.unknownSw:match.unknownEn)+'</p>';
+    html+='<div class="sechead">'+T('next')+'</div><ul class="nextsteps">'+(lang==='sw'?match.nextSw:match.nextEn).map(function(n){return '<li>'+escapeHtml(n)+'</li>';}).join('')+'</ul>';
+  } else {
+    html+='<p class="hint" style="margin-top:10px">'+T('unvExp')+'</p>';
+    html+='<div class="sechead">'+T('next')+'</div><ul class="nextsteps"><li>'+(lang==='sw'?'Tafuta tangazo rasmi kutoka chanzo rasmi kabla ya kusambaza.':'Look for an official notice or document from an official source before sharing.')+'</li><li>'+(lang==='sw'?'Rudisha ujumbe kwa VeriVoice ukiwa na viunganishi vya habari rasmi kwa ukaguzi zaidi.':'Send the message back to VeriVoice with links to official coverage for a deeper check.')+'</li></ul>';
+  }
+  html+='</div>';
+  return {html:html, verdict:v, claim:claimText};
+}
+function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+/* ---------- run ---------- */
+var lastSummary=null;
+function runCheck(){
+  var text=activeText().value.trim();
+  if(!text) return;
+  var btn=document.getElementById('checkBtn');
+  btn.disabled=true; document.getElementById('t_checkbtn').textContent=T('processing');
+  var pipe=document.getElementById('pipeline'); pipe.style.display='block';
+  var steps=['ps1','ps2','ps3','ps4','ps5'], i=0;
+  var claimed=extractClaims(text);
+  function tick(){
+    if(i>0){
+      document.getElementById(steps[i-1]).className='step done';
+      document.getElementById(steps[i-1]).querySelector('.tick').textContent='✓';
+    }
+    if(i<steps.length){
+      document.getElementById(steps[i]).className='step done';
+      i++; setTimeout(tick, 420);
+    } else { finish(claimed); }
+  }
+  tick();
+}
+function finish(claims){
+  var low=' '+claims.join(' ').toLowerCase()+' ';
+  var unsafe=SAFETY_WORDS.some(function(w){return low.indexOf(w)>=0;});
+  if(unsafe){document.getElementById('safety').style.display='block'; window.scrollTo({top:0,behavior:'smooth'});}
+  var results=claims.map(function(c){return verdictCard(c,reconcile(c));});
+  var html='<div class="card"><h2>'+T('claimTitle')+'</h2></div>';
+  if(claims.length===1 && claims[0].length<30) html='<div class="card"><h2>'+T('noClaims2')+'</h2></div>';
+  results.forEach(function(r){html+=r.html;});
+  document.getElementById('results').innerHTML=html;
+  var lines=[T('summaryTitle'),''];
+  results.forEach(function(r,i){
+    lines.push((i+1)+'. '+r.claim);
+    lines.push('→ '+T(r.verdict));
+  });
+  lines.push('',T('summaryBy'));
+  lastSummary=lines.join('\n');
+  document.getElementById('sharebox').textContent=lastSummary;
+  document.getElementById('sharebox').style.display='block';
+  document.getElementById('sharecard').style.display='block';
+  document.getElementById('checkBtn').disabled=false;
+  document.getElementById('t_checkbtn').textContent=T('check');
+  if(navigator.share) document.getElementById('sharebtn').style.display='block';
+}
+function copySummary(){
+  var done=function(){
+    document.getElementById('t_copy').textContent=T('copied');
+    setTimeout(function(){document.getElementById('t_copy').textContent=T('copy');},2000);
+  };
+  if(navigator.clipboard&&navigator.clipboard.writeText&&lastSummary){navigator.clipboard.writeText(lastSummary).then(done,done);}
+  else{
+    var ta=document.createElement('textarea');ta.value=lastSummary||'';document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');}catch(e){}
+    document.body.removeChild(ta);done();
+  }
+}
+function nativeShare(){
+  if(navigator.share&&lastSummary) navigator.share({title:'VeriVoice',text:lastSummary}).catch(function(){});
+}
+document.getElementById('t_safetyp').textContent=L.en.safetyP;
+</script>
+</body>
+</html>
