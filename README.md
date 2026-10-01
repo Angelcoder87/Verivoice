@@ -8,7 +8,7 @@
 
 Submit information exactly as you received it — **voice note or text** — and VeriVoice transcribes it, researches the main claims against live sources, and returns a plain-language verdict with sources, a confidence level, honest unknowns, and clear next steps you can act on. A shareable summary goes straight back to the group chat the message came from.
 
-> **PoC scope:** this proof of concept implements voice + text end-to-end, live. Screenshot checking and a full Sheng interface are explored in the companion static prototype (`prototype/`).
+> **PoC scope:** the live demo (`prototype/`, deployed below) runs the full interface — voice, text and screenshot inputs, EN/SW/SH languages, safety routing, and share-back — with a curated demo evidence base. A production build replaces that base with live AI reconciliation against named sources.
 
 ## Design principle
 
@@ -23,22 +23,22 @@ Submit information exactly as you received it — **voice note or text** — and
 - **Local relevance**: next steps reference real Kenyan institutions, portals and hotlines
 - **Safety**: claims touching violence or public health route to established support pathways
 
-## Live pipeline
+## How it works
 
-**Input → Transcription → Claim Extraction → Evidence Retrieval (live web research) → AI Reconciliation → Verdict → Bilingual Explanation → Share-back**
+**Input → Transcription → Claim Extraction → Evidence Matching → Verdict → Bilingual Explanation → Share-back**
 
-Every verdict returned by the live demo is checked against real, current sources at the moment you test it — nothing is canned.
+The demo ships with five evidence-backed scenarios: a school-fee rumour (disputed), a county bursary claim (misleading), a fake tender notice (disputed), the 2027 general-election date (supported — sourced to the Constitution and IEBC), and a fake voter-registration SMS (disputed — election-fraud pattern). Anything that doesn't match a scenario returns an honest **Unverified** — *Hakuna ushahidi wa kutosha* — instead of a guess. Claims touching violence, public health or elections route to established Kenyan support pathways first.
 
 ## Try it
 
 1. Open https://angelcoder87.github.io/Verivoice/ on your phone or a phone-width browser.
-2. Paste the claim from `demo-assets/demo_claim_county_budget.txt` and tap *Check this for me*.
-3. The pipeline runs end-to-end (typically 1–2 minutes): the request is queued, an AI agent researches the claim against authoritative Kenyan sources, and the bilingual verdict card appears — sources, confidence, next steps, caveats.
-4. Toggle EN/SW for the explanation language, then use *Share on WhatsApp* to send the verdict back where the claim came from.
+2. Tap a **Try:** button (school-fee rumour, bursary claim, tender notice, election date, or fake voter-registration SMS) — or speak, type, or drop a screenshot of any forwarded message.
+3. Verdict cards appear one by one: each claim gets a verdict (Supported / Disputed / Misleading / Unverified), its sources, a confidence level, what we *do not* know, and next steps referencing real Kenyan institutions and hotlines.
+4. Toggle EN/SW/SH for the interface and explanation language, then copy the summary card back into the group chat.
 
 ## Links
 
-- **Concept prototype:** https://angelcoder87.github.io/Verivoice/
+- **Live demo:** https://angelcoder87.github.io/Verivoice/
 
 ---
 

@@ -23,7 +23,7 @@ var L = {
     copy:"Copy summary card",share:"Share…",
     summaryTitle:"VeriVoice check — summary",
     summaryBy:"Checked with VeriVoice 🔎",
-    ex:["Try: Sheng school-fee rumour","Try: county bursary claim","Try: WhatsApp tender notice"],
+    ex:["Try: Sheng school-fee rumour","Try: county bursary claim","Try: WhatsApp tender notice","Try: election date fact","Try: fake voter-registration SMS"],
     ocr:"Reading the image…",
     ocrDone:"Text read from the image. You can correct it below.",
     processing:"Checking…",
@@ -53,7 +53,7 @@ var L = {
     copy:"Nakili kadi ya muhtasari",share:"Shiriki…",
     summaryTitle:"Ukaguzi wa VeriVoice — muhtasari",
     summaryBy:"Imekaguliwa kwa VeriVoice 🔎",
-    ex:["Jaribu: uvumi wa ada za shule (Sheng)","Jaribu: dai la bursary ya kaunti","Jaribu: tangazo la tender la WhatsApp"],
+    ex:["Jaribu: uvumi wa ada za shule (Sheng)","Jaribu: dai la bursary ya kaunti","Jaribu: tangazo la tender la WhatsApp","Jaribu: tarehe ya uchaguzi","Jaribu: SMS ya ulaghai wa usajili"],
     ocr:"Inasoma picha…",
     ocrDone:"Maandishi yamependwa kutoka picha. Unaweza kuyasahihisha hapa chini.",
     processing:"Inakagua…",
@@ -83,7 +83,7 @@ var L = {
     copy:"Copy summary card",share:"Share…",
     summaryTitle:"VeriVoice check — summary",
     summaryBy:"Imecheckiwa na VeriVoice 🔎",
-    ex:["Jaribu: uvumi wa ada za shule (Sheng)","Jaribu: dai la bursary ya county","Jaribu: tender ya WhatsApp"],
+    ex:["Jaribu: uvumi wa ada za shule (Sheng)","Jaribu: dai la bursary ya county","Jaribu: tender ya WhatsApp","Jaribu: election date","Jaribu: fake voter-registration SMS"],
     ocr:"Inasoma picha…",
     ocrDone:"Text imetolewa kwa picha. Unaweza kusahihisha hapa chini.",
     processing:"Inahakiki…",
@@ -115,7 +115,7 @@ function setLang(l){
   document.getElementById('t_copy').textContent=T('copy');
   document.getElementById('t_share').textContent=T('share');
   document.getElementById('t_foot').textContent=T('foot');
-  for(var j=0;j<3;j++) document.getElementById('ex'+j).textContent=T('ex')[j];
+  for(var j=0;j<5;j++) document.getElementById('ex'+j).textContent=T('ex')[j];
 }
 
 /* ---------- tabs & input sync ---------- */
@@ -136,7 +136,9 @@ function syncText(){
 var EXAMPLES=[
  "Mkuu, skulz za county zimeanza ada mpya kuanzia next term. Watoto wanalazimika kulipia elfu tatu kabla hawajarudi. Nimetuma voice note kwa group tuone kama ni true ama ni con.",
  "I heard the county has set aside KSh 2 billion for bursaries this year and every student in the ward will get KSh 30,000. They said applications close on Friday at the chief's office.",
- "TENDER NOTICE!! County Government invites bids for construction of Gikomba market Phase 2. To apply, send KSh 5,000 registration fee via M-PESA to the procurement officer and forward your documents to this WhatsApp number. Deadline tomorrow."
+ "TENDER NOTICE!! County Government invites bids for construction of Gikomba market Phase 2. To apply, send KSh 5,000 registration fee via M-PESA to the procurement officer and forward your documents to this WhatsApp number. Deadline tomorrow.",
+ "Kenya's next general election will be held on the second Tuesday of August 2027, according to the message going round.",
+ "URGENT: IEBC voter registration closes on Friday. Confirm your registration now by sending KSh 200 via M-PESA Paybill 111222 before the deadline."
 ];
 function useExample(i){
   var el=document.getElementById('plainText');
@@ -243,7 +245,44 @@ var EVIDENCE=[
   unknownSw:"Hatupati tender yoyote ya Gikomba Awamu ya 2 kwenye lango la umma inayolingana. Pamoja na malipo kwa namba binafsi, hii inafanana na ulaghai unaojulikana.",
   nextEn:["Check tenders.go.ke before sending any money — if it is not on the portal, it is not a tender.","Report the number to the DCI Hotline ya Uhalifu: 0800 722 203 and warn the group.","Never send M-PESA to individuals for public tenders; official fees go to county paybill accounts with receipts."],
   nextSw:["Kagua tenders.go.ke kabla ya kutuma pesa — kama haipo kwenye lango, si tender halali.","Ripoti namba hiyo kwa DCI Hotline ya Uhalifu: 0800 722 203 na onya kikundi.","Usitume M-PESA kwa watu binafsi kwa tenda za umma; malipo halali huenda kwa paybill ya kaunti yenye risiti."]
+ },
+ {
+  keywords:["election","uchaguzi","general election","2027","second tuesday","agosti","august","kura","vote"],
+  anchors:["second tuesday","august 2027","agosti 2027","general election","uchaguzi mkuu","uchaguzi wa 2027"],
+  verdict:"supported", confidence:88,
+  enClaim:"Kenya's next general election will be held on the second Tuesday of August 2027.",
+  swClaim:"Uchaguzi mkuu unaofuata wa Kenya utafanyika Jumanne ya pili ya Agosti 2027.",
+  shClaim:"Next general election ya Kenya inakuwa second Tuesday ya August 2027.",
+  shUnknown:"Dates za nominations na voter-registration windows bado hazijatangazwa — lakini date ya August 2027 ni fixed na Katiba, na mabadiliko yoyote yakuja kwa gazette notice ya IEBC, si kwa forwarded message.",
+  shNext:["Confirm status yako ya registration kwa IEBC office ama Huduma Centre — ni free kabisa.","Usiamini message inayosema election imepostponed bila gazette notice ya IEBC.","Share date sahihi, si rumours — elekeza group kwenye ukurasa wa IEBC."],
+  unknownEn:"We could not find any gazette notice changing the election date. Exact nomination dates and voter-registration windows are not yet announced; the second Tuesday of August 2027 is fixed by the Constitution.",
+  unknownSw:"Hatupati tangazo rasmi loloto la kubadilisha tarehe ya uchaguzi. Tarehe kamili ya uteuzi wa wagombea na vipindi vya usajili bado haijatangazwa; Jumanne ya pili ya Agosti 2027 imewekwa na Katiba.",
+  nextEn:["Confirm your registration status at an IEBC office or Huduma centre — it is free.","Do not believe messages claiming the election has been postponed without an official IEBC gazette notice.","Share the correct date, not rumours — point the group to the IEBC page."],
+  nextSw:["Thibitisha hali ya usajili wako kwenye ofisi ya IEBC au Huduma Centre — ni bure.","Usiamini ujumbe unaodai uchaguzi umesitishwa bila tangazo rasmi la IEBC katika gazeti.","Sambaza tarehe sahihi, si uvumi — elekeza kikundi kwenye ukurasa wa IEBC."],
+  sources:[
+    {name:"Constitution of Kenya, Article 136(1)", note:"General elections are held on the second Tuesday of August in every fifth year — putting the next one on 10 August 2027.", url:"http://kenyalaw.org/kl/index.php?id=398"},
+    {name:"Independent Electoral and Boundaries Commission (IEBC)", note:"Official election timelines come through IEBC gazette notices — a date change would be announced officially, never only via forwarded messages.", url:"https://www.iebc.or.ke/"}
+  ]
+ },
+ {
+  keywords:["iebc","voter","registration","usajili","kura","mpesa","m-pesa","paybill","ksh 200","elfu mia mbili","confirm","deadline","register"],
+  anchors:["iebc","voter registration","usajili wa kura","paybill"],
+  verdict:"disputed", confidence:82,
+  enClaim:"IEBC voter registration closes on Friday; confirm your registration by sending KSh 200 via M-PESA Paybill before the deadline.",
+  swClaim:"Usajili wa wapiga kura wa IEBC unaisha Ijumaa; thibitisha usajili wako kwa kutuma KSh 200 kwa M-PESA Paybill kabla ya mwisho.",
+  shClaim:"IEBC voter registration inaisha Friday — confirm registration yako kwa kutuma 200 bob via M-PESA Paybill before deadline.",
+  shUnknown:"Hakuna notice yoyote ya IEBC inayotaka malipo ya Paybill — huduma zote za usajili wa kura ni bure kwenye vituo rasmi. Hii ni pattern ya fraud inayojulikana msimu wa election.",
+  shNext:["Register ama confirm kwa IEBC office ama Huduma Centre — ni free kabisa.","Usitume doh kwa Paybill yoyote inayosema 'confirm voter registration'.","Report SMS hiyo kwa DCI Hotline ya Uhalifu: 0800 722 203 uonye group."],
+  unknownEn:"We could not find any IEBC notice asking voters to pay via M-PESA Paybill. All IEBC voter services are free at official centres; payment demands like this are a known fraud pattern ahead of elections.",
+  unknownSw:"Hatupati tangazo lolote la IEBC linaloomba wapiga kura kulipa kupitia M-PESA Paybill. Huduma zote za IEBC ni bure kwenye vituo rasmi; madai ya malipo kama haya ni ulaghai unaojulikana kabla ya uchaguzi.",
+  nextEn:["Register or confirm at an IEBC office or Huduma centre — it is free.","Never send money to any Paybill claiming to 'confirm' voter registration.","Report the message to the DCI Hotline ya Uhalifu: 0800 722 203 and warn the group."],
+  nextSw:["Jisajili au thibitisha kwenye ofisi ya IEBC au Huduma Centre — ni bure.","Usitume pesa kwa Paybill yoyote inayodai kuthibitisha usajili wa kura.","Ripoti ujumbe huo kwa DCI Hotline ya Uhalifu: 0800 722 203 na onya kikundi."],
+  sources:[
+    {name:"IEBC — voter registration", note:"Voter registration is free and in-person at IEBC offices and Huduma centres; IEBC never asks for M-PESA payments to confirm registration.", url:"https://www.iebc.or.ke/"},
+    {name:"Directorate of Criminal Investigations (DCI)", note:"SMS messages requesting payment to unknown Paybills are a common fraud pattern; report them to the DCI Hotline ya Uhalifu: 0800 722 203.", url:"https://www.dci.go.ke/"}
+  ]
  }
+
 ];
 var SAFETY_WORDS=["kill","waua","kuua","attack","shambulio","mob justice","burn","choma","violence","vurugu","rape","shoot","riot","vita","election","uchaguzi","vaccine","chanjo","covid","ebola","cholera","kipindupindu","suicide","abuse","ukatili"];
 
