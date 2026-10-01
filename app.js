@@ -1,156 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="VeriVoice — Verify. Understand. Act. A multilingual civic information assistant for Kenya.">
-<title>VeriVoice — Verify. Understand. Act.</title>
-<style>
-:root{
-  --bg:#0d1520; --card:#14202e; --card2:#1b2a3b; --ink:#eaf1f7; --muted:#9db2c4;
-  --accent:#22c55e; --accent-ink:#06130b; --line:#28394d;
-  --supported:#22c55e; --disputed:#ef4444; --misleading:#f59e0b; --unverified:#94a3b8;
-  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.55;font-size:17px}
-.wrap{max-width:760px;margin:0 auto;padding:16px 14px 60px}
-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0 14px}
-.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.35rem;letter-spacing:.2px}
-.logo .mark{width:38px;height:38px;border-radius:10px;background:var(--accent);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;font-size:1.2rem}
-.tagline{color:var(--muted);font-size:.95rem;margin-top:-14px;margin-bottom:18px}
-.langtoggle{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;flex-shrink:0}
-.langtoggle button{background:transparent;color:var(--muted);border:0;padding:7px 14px;font-weight:700;cursor:pointer;font-size:.9rem}
-.langtoggle button.on{background:var(--accent);color:var(--accent-ink)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
-h2{font-size:1.02rem;margin-bottom:10px}
-.tabs{display:flex;gap:8px;margin-bottom:14px}
-.tab{flex:1;background:transparent;border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:10px 6px;cursor:pointer;font-size:.92rem;font-weight:600;font-family:inherit}
-.tab.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
-.hint{color:var(--muted);font-size:.85rem;margin-top:8px}
-textarea{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:10px;color:var(--ink);padding:12px;font-size:1rem;font-family:inherit;min-height:110px;resize:vertical}
-textarea:focus{outline:2px solid var(--accent)}
-.btn{display:block;width:100%;background:var(--accent);color:var(--accent-ink);border:0;border-radius:12px;padding:15px;font-size:1.05rem;font-weight:800;cursor:pointer;font-family:inherit;margin-top:6px}
-.btn:disabled{opacity:.55;cursor:wait}
-.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink);font-weight:600;margin-top:10px}
-.microw{display:flex;align-items:center;gap:10px;justify-content:center;flex-wrap:wrap}
-.micbtn{width:92px;height:92px;border-radius:50%;border:2px solid var(--accent);background:var(--card2);color:var(--ink);font-size:2.2rem;cursor:pointer}
-.micbtn.rec{background:#ef4444;border-color:#ef4444;animation:pulse 1.2s infinite}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(239,68,68,.5)}70%{box-shadow:0 0 0 22px rgba(239,68,68,0)}100%{box-shadow:0 0 0 0 rgba(239,68,68,0)}}
-.transcript{margin-top:12px}
-.drop{border:2px dashed var(--line);border-radius:12px;padding:26px;text-align:center;color:var(--muted);cursor:pointer}
-.drop.hasimg{padding:10px}
-.drop img{max-width:100%;border-radius:8px}
-.ocrprogress{color:var(--muted);font-size:.9rem;margin-top:10px}
-.pipeline{display:none;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:14px}
-.pipeline .step{display:flex;align-items:center;gap:10px;padding:7px 0;color:var(--muted);font-size:.95rem}
-.pipeline .step.done{color:var(--ink)}
-.pipeline .step .tick{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);display:inline-flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0}
-.pipeline .step.done .tick{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
-.safety{background:#2a1518;border:1px solid #7f1d1d;border-radius:12px;padding:14px;margin-bottom:14px}
-.safety h3{font-size:.98rem;margin-bottom:6px;color:#fca5a5}
-.safety p{font-size:.95rem}
-.verdictcard{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--unverified);border-radius:12px;padding:16px;margin-bottom:14px}
-.verdictcard.supported{border-left-color:var(--supported)}
-.verdictcard.disputed{border-left-color:var(--disputed)}
-.verdictcard.misleading{border-left-color:var(--misleading)}
-.verdictcard.unverified{border-left-color:var(--unverified)}
-.claim{font-size:1.05rem;font-weight:600;margin-bottom:10px}
-.badge{display:inline-block;padding:4px 12px;border-radius:999px;font-weight:800;font-size:.85rem;letter-spacing:.4px;margin-bottom:10px}
-.badge.supported{background:rgba(34,197,94,.16);color:#6ee7a0}
-.badge.disputed{background:rgba(239,68,68,.16);color:#fda4a4}
-.badge.misleading{background:rgba(245,158,11,.16);color:#fcd34d}
-.badge.unverified{background:rgba(148,163,184,.16);color:#cbd5e1}
-.sechead{font-size:.82rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin:12px 0 6px}
-.source{display:block;background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;color:var(--ink);text-decoration:none;font-size:.95rem}
-.source small{color:var(--muted);display:block}
-.confbar{height:8px;background:var(--card2);border-radius:999px;overflow:hidden;margin:6px 0 2px}
-.confbar span{display:block;height:100%;background:var(--accent)}
-.nextsteps li{margin:4px 0 4px 18px;font-size:.97rem}
-.sharebox{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px;font-size:.93rem;white-space:pre-wrap;display:none}
-footer{color:var(--muted);font-size:.82rem;margin-top:26px;border-top:1px solid var(--line);padding-top:14px}
-a{color:#7dd3fc}
-.try{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.try button{background:var(--card2);border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:6px 12px;font-size:.8rem;cursor:pointer;font-family:inherit}
-.try button:hover{color:var(--ink);border-color:var(--accent)}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <header>
-    <div class="logo"><div class="mark">🔎</div><span>VeriVoice</span></div>
-    <div class="langtoggle"><button id="btnEn" class="on" onclick="setLang('en')">EN</button><button id="btnSw" onclick="setLang('sw')">SW</button></div>
-  </header>
-  <p class="tagline" id="t_tagline">Verify. Understand. Act. — check it before you share it.</p>
-
-  <div class="card">
-    <h2 id="t_howtitle">How to use</h2>
-    <p class="hint" id="t_howtext">Send VeriVoice the information exactly as you received it — a voice note, typed text, or a screenshot. It transcribes, extracts the main claims, checks them against evidence, and returns a plain-language verdict with sources and next steps.</p>
-    <div class="try">
-      <button onclick="useExample(0)" id="ex0">Try: Sheng school-fee rumour</button>
-      <button onclick="useExample(1)" id="ex1">Try: county bursary claim</button>
-      <button onclick="useExample(2)" id="ex2">Try: WhatsApp tender notice</button>
-    </div>
-  </div>
-
-  <div class="tabs">
-    <button class="tab on" id="tabVoice" onclick="setTab('voice')">🎤 <span id="t_tabVoice">Voice</span></button>
-    <button class="tab" id="tabText" onclick="setTab('text')">✍️ <span id="t_tabText">Text</span></button>
-    <button class="tab" id="tabImg" onclick="setTab('img')">📷 <span id="t_tabImg">Screenshot</span></button>
-  </div>
-
-  <div class="card" id="paneVoice">
-    <div class="microw">
-      <button class="micbtn" id="micbtn" onclick="toggleMic()">🎤</button>
-    </div>
-    <p class="hint" style="text-align:center" id="t_michint">Tap the mic and speak (Sheng and Kiswahili welcome). Live transcription uses your browser's speech recognition — Chrome works best. You can also paste or edit the transcript below.</p>
-    <div class="transcript"><textarea id="voiceText" placeholder="Your words will appear here…" oninput="syncText()"></textarea></div>
-  </div>
-
-  <div class="card" id="paneText" style="display:none">
-    <textarea id="plainText" placeholder="Paste or type the message you received…" oninput="syncText()"></textarea>
-  </div>
-
-  <div class="card" id="paneImg" style="display:none">
-    <div class="drop" id="drop" onclick="document.getElementById('file').click()">
-      <span id="t_drop">📷 Tap to choose a screenshot of the message</span>
-    </div>
-    <input type="file" id="file" accept="image/*" style="display:none" onchange="handleImage(event)">
-    <p class="ocrprogress" id="ocrprogress"></p>
-    <textarea id="imgText" style="display:none;margin-top:10px" placeholder="Text read from the image (you can correct it)…" oninput="syncText()"></textarea>
-  </div>
-
-  <button class="btn" id="checkBtn" onclick="runCheck()" disabled>🔍 <span id="t_checkbtn">Check this information</span></button>
-  <p class="hint" style="text-align:center" id="t_privacy">No account needed. Nothing you send is stored.</p>
-
-  <div class="pipeline" id="pipeline">
-    <div class="step" id="ps1"><span class="tick"></span> <span id="t_ps1">Transcription / text extraction</span></div>
-    <div class="step" id="ps2"><span class="tick"></span> <span id="t_ps2">Claim extraction</span></div>
-    <div class="step" id="ps3"><span class="tick"></span> <span id="t_ps3">Evidence retrieval</span></div>
-    <div class="step" id="ps4"><span class="tick"></span> <span id="t_ps4">AI reconciliation</span></div>
-    <div class="step" id="ps5"><span class="tick"></span> <span id="t_ps5">Preparing your verdict cards</span></div>
-  </div>
-
-  <div id="safety" class="safety" style="display:none">
-    <h3 id="t_safetyh">⚠️ This message touches safety</h3>
-    <p id="t_safetyp"></p>
-  </div>
-
-  <div id="results"></div>
-
-  <div class="card" id="sharecard" style="display:none">
-    <h2 id="t_shareh">Share back to the group</h2>
-    <div class="sharebox" id="sharebox"></div>
-    <button class="btn ghost" id="copybtn" onclick="copySummary()">📋 <span id="t_copy">Copy summary card</span></button>
-    <button class="btn ghost" id="sharebtn" onclick="nativeShare()" style="display:none">📤 <span id="t_share">Share…</span></button>
-  </div>
-
-  <footer id="t_foot">
-    VeriVoice is an assistant, never an oracle. Verdicts are evidence summaries with confidence levels — when evidence is thin, it says so. This proof of concept runs fully in your browser with a demo evidence base covering the demo scenarios; the production design uses AI reconciliation against live, named sources. No data is retained.
-  </footer>
-</div>
-
-<script>
 /* ---------- i18n ---------- */
 var L = {
   en:{
@@ -176,7 +23,7 @@ var L = {
     copy:"Copy summary card",share:"Share…",
     summaryTitle:"VeriVoice check — summary",
     summaryBy:"Checked with VeriVoice 🔎",
-    ex:["Try: Sheng school-fee rumour","Try: county bursary claim","Try: WhatsApp tender notice"],
+    ex:["Try: Sheng school-fee rumour","Try: county bursary claim","Try: WhatsApp tender notice","Try: election date fact","Try: fake voter-registration SMS"],
     ocr:"Reading the image…",
     ocrDone:"Text read from the image. You can correct it below.",
     processing:"Checking…",
@@ -206,12 +53,42 @@ var L = {
     copy:"Nakili kadi ya muhtasari",share:"Shiriki…",
     summaryTitle:"Ukaguzi wa VeriVoice — muhtasari",
     summaryBy:"Imekaguliwa kwa VeriVoice 🔎",
-    ex:["Jaribu: uvumi wa ada za shule (Sheng)","Jaribu: dai la bursary ya kaunti","Jaribu: tangazo la tender la WhatsApp"],
+    ex:["Jaribu: uvumi wa ada za shule (Sheng)","Jaribu: dai la bursary ya kaunti","Jaribu: tangazo la tender la WhatsApp","Jaribu: tarehe ya uchaguzi","Jaribu: SMS ya ulaghai wa usajili"],
     ocr:"Inasoma picha…",
     ocrDone:"Maandishi yamependwa kutoka picha. Unaweza kuyasahihisha hapa chini.",
     processing:"Inakagua…",
     copied:"Imenakiliwa ✓",
     noClaims2:"Hakuna madai makuu yaliyopatikana."
+  },
+  sh:{
+    tagline:"Hakiki. Elewa. Tenda. — check kabla ya kushare.",
+    howtitle:"Namna ya kutumia",
+    howtext:"Tuma VeriVoice ujumbe kama ulivyoipokea — sauti, text, ama screenshot. Inatranscribe, inatoa madai, inahakiki ushahidi, na inakupa verdict kwa lugha rahisi pamoja na sources na next steps.",
+    tabVoice:"Sauti",tabText:"Text",tabImg:"Picha",
+    micIdle:"Bonyeza mic na ongea (Sheng na Kiswahili ziko karibu). Live transcription inatumia speech recognition ya browser — Chrome ni best. Unaweza pia kuandika ama ku-edit transcript hapa chini.",
+    micRec:"Inaskiliza… ongea sasa. Bonyeza tena kuisha.",
+    micNo:"Browser yako haipati live speech recognition. Tumia Chrome, ama andika ujumbe kwa tab ya Text — kila kitu kingine kinaenda sawa.",
+    drop:"📷 Bonyeza kuchangua screenshot ya ujumbe",
+    check:"Hakiki hii info",
+    privacy:"Hakuna account inayohitajika. Hakuna kitu tunachostore.",
+    ps1:"Transcription / ku-extract text",ps2:"Kutoa madai",ps3:"Kutafuta ushahidi",ps4:"AI reconciliation",ps5:"Kuandaa verdict cards",
+    safetyH:"⚠️ Ujumbe huu unagusa usalama",
+    safetyP:"Kwa sababu ujumbe huu unaweza kuhusu violence, afya ya umma, ama usalama wa umma, VeriVoice inakupa kwanza pathways za msaada zilizothibitishwa. Police: 999 ama 112. DCI Hotline ya Uhalifu: 0800 722 203. GBV helpline: 1195. Kuripoti hate speech: 4157.",
+    claimTitle:"Madai makuu tumeyopata",
+    supported:"NI TRUE",disputed:"NI CON",misleading:"HALF-TRUTH",unverified:"HAIJAHAKIKIWA",
+    evidence:"Ushahidi",unknown:"Tunachokosa kujua",next:"Next steps unazoweza kuchukua",confidence:"Confidence",
+    unvExp:"Hakuna ushahidi ya kutosha ya kukagua hii. Usishare hadi imethibitishwa na source unayoiamini.",
+    noClaims:"Hakuna madai makuu kwenye ujumbe huu. Jaribu kutuma tena kwa maneno ulivyoipokea.",
+    shareH:"Share kwa group",
+    copy:"Copy summary card",share:"Share…",
+    summaryTitle:"VeriVoice check — summary",
+    summaryBy:"Imecheckiwa na VeriVoice 🔎",
+    ex:["Jaribu: uvumi wa ada za shule (Sheng)","Jaribu: dai la bursary ya county","Jaribu: tender ya WhatsApp","Jaribu: election date","Jaribu: fake voter-registration SMS"],
+    ocr:"Inasoma picha…",
+    ocrDone:"Text imetolewa kwa picha. Unaweza kusahihisha hapa chini.",
+    processing:"Inahakiki…",
+    copied:"Imecopy ✓",
+    noClaims2:"Hakuna madai makuu kwenye ujumbe huu."
   }
 };
 var lang='en';
@@ -220,6 +97,7 @@ function setLang(l){
   lang=l;
   document.getElementById('btnEn').className=l==='en'?'on':'';
   document.getElementById('btnSw').className=l==='sw'?'on':'';
+  document.getElementById('btnSh').className=l==='sh'?'on':'';
   document.getElementById('t_tagline').textContent=T('tagline');
   document.getElementById('t_howtitle').textContent=T('howtitle');
   document.getElementById('t_howtext').textContent=T('howtext');
@@ -237,7 +115,7 @@ function setLang(l){
   document.getElementById('t_copy').textContent=T('copy');
   document.getElementById('t_share').textContent=T('share');
   document.getElementById('t_foot').textContent=T('foot');
-  for(var j=0;j<3;j++) document.getElementById('ex'+j).textContent=T('ex')[j];
+  for(var j=0;j<5;j++) document.getElementById('ex'+j).textContent=T('ex')[j];
 }
 
 /* ---------- tabs & input sync ---------- */
@@ -258,7 +136,9 @@ function syncText(){
 var EXAMPLES=[
  "Mkuu, skulz za county zimeanza ada mpya kuanzia next term. Watoto wanalazimika kulipia elfu tatu kabla hawajarudi. Nimetuma voice note kwa group tuone kama ni true ama ni con.",
  "I heard the county has set aside KSh 2 billion for bursaries this year and every student in the ward will get KSh 30,000. They said applications close on Friday at the chief's office.",
- "TENDER NOTICE!! County Government invites bids for construction of Gikomba market Phase 2. To apply, send KSh 5,000 registration fee via M-PESA to the procurement officer and forward your documents to this WhatsApp number. Deadline tomorrow."
+ "TENDER NOTICE!! County Government invites bids for construction of Gikomba market Phase 2. To apply, send KSh 5,000 registration fee via M-PESA to the procurement officer and forward your documents to this WhatsApp number. Deadline tomorrow.",
+ "Kenya's next general election will be held on the second Tuesday of August 2027, according to the message going round.",
+ "URGENT: IEBC voter registration closes on Friday. Confirm your registration now by sending KSh 200 via M-PESA Paybill 111222 before the deadline."
 ];
 function useExample(i){
   var el=document.getElementById('plainText');
@@ -314,9 +194,13 @@ function handleImage(ev){
 var EVIDENCE=[
  {
   keywords:["ada","school fee","school fees","ada mpya","skulz","shule","term","watoto","lipia","elfu tatu","registration fee","schools","county schools","kabla"],
+  anchors:["ada mpya","skulz","shule","elfu tatu","ksh 3,000","return fee","county schools","school fee","school fees","ada"],
   verdict:"disputed", confidence:72,
   swClaim:"Kaunti imeanza ada mpya kwenye shule za kaunti kuanzia muhula ujao; watoto watachapishwa KSh 3,000 kabla ya kurudi.",
   enClaim:"County schools have introduced a new fee starting next term, and children must pay KSh 3,000 before returning.",
+  shClaim:"Shule za county zimeanza ada mpya kuanzia next term — watoto wanalipia 3k kabla hawajarudi shule.",
+  shUnknown:"Hatuna circular rasmi ambayo voice note inarefer — hakuna doc imecirculate. Kuna wezekana ni ombi la shule moja, lakini hakuna ada mpya ya county mzima iko kwa record.",
+  shNext:["Usilipe 'registration' ama 'return fee' yoyote kabla uconfirm na head teacher na ofisi ya elimu ya sub-county.","Ulice sender anaye circular ya kusema — ada mpya halali huja na doc, si voice note pekee.","Report any extortion ya ada kwa Ministry of Education."],
   sources:[
     {name:"Ministry of Education — public school fee guidelines", note:"Public day schools follow national fee guidelines; no county circular announces a KSh 3,000 'return fee'.", url:"https://www.education.go.ke/"},
     {name:"County Education Office", note:"Confirm any fee change directly with the sub-county director of education before paying anything.", url:"https://www.education.go.ke/"}
@@ -328,8 +212,12 @@ var EVIDENCE=[
  },
  {
   keywords:["bursary","bursaries","scholarship","ksh 2 billion","bilioni mbili","ksh 30,000","elfu thelathini","every student","ward","applications close","chief"],
+  anchors:["bursary","bursaries","scholarship","ksh 2 billion","bilioni mbili","ksh 30,000","elfu thelathini"],
   verdict:"misleading", confidence:64,
   enClaim:"The county has set aside KSh 2 billion for bursaries and every student in the ward will get KSh 30,000, with applications closing Friday at the chief's office.",
+  shClaim:"County imeweka KSh billion 2 kwa bursary na kila student wa ward atapata 30k — applications zinaisha Friday ofisi ya chief.",
+  shUnknown:"Hatupati uthibitisho wa billion 2 wala deadline ya Friday kutoka kwa notice rasmi yoyote. Kiasi kwa student kinatofautiana na ward.",
+  shNext:["Confirm window halali ya bursary na kamati ya ward ama ofisi ya MCA — kuapply ni free.","Usilipe mtu yoyote 'arejesti' bursary — application halali ni free kabisa.","Omba reference ya notice rasmi kabla ufuate deadline yoyote."],
   swClaim:"Kaunti imeweka akiba ya KSh bilioni 2 kwa bursary; kila mwanafunzi wa kata atapata KSh 30,000, maombi yafunguki Ijumaa ofisini kwa chief.",
   sources:[
     {name:"County budget estimates (County Assembly records)", note:"The county's bursary fund is real but smaller than claimed, and is disbursed through ward bursary committees with published criteria — not a flat KSh 30,000 for every student.", url:"https://www.parliament.go.ke/"},
@@ -342,8 +230,12 @@ var EVIDENCE=[
  },
  {
   keywords:["tender","tender notice","bids","bid","procurement","gikomba","phase 2","mpesa","m-pesa","registration fee","procurement officer","whatsapp","deadline tomorrow","construction","market"],
+  anchors:["tender","bids","bid","procurement","gikomba","tender notice"],
   verdict:"disputed", confidence:85,
   enClaim:"A county tender for Gikomba market Phase 2 requires a KSh 5,000 M-PESA 'registration fee' sent to a procurement officer via WhatsApp.",
+  shClaim:"Tender ya county ya Gikomba market Phase 2 inataka 'registration fee' ya 5k via M-PESA kwa procurement officer kwa WhatsApp.",
+  shUnknown:"Hatupati tender ya Gikomba Phase 2 kwenye portal ya umma inayomatch hii notice. Pamoja na malipo kwa personal number, hii ni pattern ya fraud inayojulikana.",
+  shNext:["Check tenders.go.ke kabla utume pesa — kama haipo kwenye portal, si tender halali.","Report number hiyo kwa DCI Hotline ya Uhalifu: 0800 722 203 na waonye group.","Usitume M-PESA kwa mtu binafsi kwa tenda za county — ada halali huenda paybill ya county na receipt."],
   swClaim:"Tender ya kaunti ya soko la Gikomba Awamu ya 2 inahitaji 'ada ya usajili' ya KSh 5,000 kupitia M-PESA kwa ofisa wa ununuzi kwa WhatsApp.",
   sources:[
     {name:"Public Procurement Information Portal (PPIP)", note:"Genuine county tenders are advertised on the public portal with a reference number and official submission channels — never via WhatsApp or personal M-PESA accounts.", url:"https://tenders.go.ke/"},
@@ -353,7 +245,44 @@ var EVIDENCE=[
   unknownSw:"Hatupati tender yoyote ya Gikomba Awamu ya 2 kwenye lango la umma inayolingana. Pamoja na malipo kwa namba binafsi, hii inafanana na ulaghai unaojulikana.",
   nextEn:["Check tenders.go.ke before sending any money — if it is not on the portal, it is not a tender.","Report the number to the DCI Hotline ya Uhalifu: 0800 722 203 and warn the group.","Never send M-PESA to individuals for public tenders; official fees go to county paybill accounts with receipts."],
   nextSw:["Kagua tenders.go.ke kabla ya kutuma pesa — kama haipo kwenye lango, si tender halali.","Ripoti namba hiyo kwa DCI Hotline ya Uhalifu: 0800 722 203 na onya kikundi.","Usitume M-PESA kwa watu binafsi kwa tenda za umma; malipo halali huenda kwa paybill ya kaunti yenye risiti."]
+ },
+ {
+  keywords:["election","uchaguzi","general election","2027","second tuesday","agosti","august","kura","vote"],
+  anchors:["second tuesday","august 2027","agosti 2027","general election","uchaguzi mkuu","uchaguzi wa 2027"],
+  verdict:"supported", confidence:88,
+  enClaim:"Kenya's next general election will be held on the second Tuesday of August 2027.",
+  swClaim:"Uchaguzi mkuu unaofuata wa Kenya utafanyika Jumanne ya pili ya Agosti 2027.",
+  shClaim:"Next general election ya Kenya inakuwa second Tuesday ya August 2027.",
+  shUnknown:"Dates za nominations na voter-registration windows bado hazijatangazwa — lakini date ya August 2027 ni fixed na Katiba, na mabadiliko yoyote yakuja kwa gazette notice ya IEBC, si kwa forwarded message.",
+  shNext:["Confirm status yako ya registration kwa IEBC office ama Huduma Centre — ni free kabisa.","Usiamini message inayosema election imepostponed bila gazette notice ya IEBC.","Share date sahihi, si rumours — elekeza group kwenye ukurasa wa IEBC."],
+  unknownEn:"We could not find any gazette notice changing the election date. Exact nomination dates and voter-registration windows are not yet announced; the second Tuesday of August 2027 is fixed by the Constitution.",
+  unknownSw:"Hatupati tangazo rasmi loloto la kubadilisha tarehe ya uchaguzi. Tarehe kamili ya uteuzi wa wagombea na vipindi vya usajili bado haijatangazwa; Jumanne ya pili ya Agosti 2027 imewekwa na Katiba.",
+  nextEn:["Confirm your registration status at an IEBC office or Huduma centre — it is free.","Do not believe messages claiming the election has been postponed without an official IEBC gazette notice.","Share the correct date, not rumours — point the group to the IEBC page."],
+  nextSw:["Thibitisha hali ya usajili wako kwenye ofisi ya IEBC au Huduma Centre — ni bure.","Usiamini ujumbe unaodai uchaguzi umesitishwa bila tangazo rasmi la IEBC katika gazeti.","Sambaza tarehe sahihi, si uvumi — elekeza kikundi kwenye ukurasa wa IEBC."],
+  sources:[
+    {name:"Constitution of Kenya, Article 136(1)", note:"General elections are held on the second Tuesday of August in every fifth year — putting the next one on 10 August 2027.", url:"http://kenyalaw.org/kl/index.php?id=398"},
+    {name:"Independent Electoral and Boundaries Commission (IEBC)", note:"Official election timelines come through IEBC gazette notices — a date change would be announced officially, never only via forwarded messages.", url:"https://www.iebc.or.ke/"}
+  ]
+ },
+ {
+  keywords:["iebc","voter","registration","usajili","kura","mpesa","m-pesa","paybill","ksh 200","elfu mia mbili","confirm","deadline","register"],
+  anchors:["iebc","voter registration","usajili wa kura","paybill"],
+  verdict:"disputed", confidence:82,
+  enClaim:"IEBC voter registration closes on Friday; confirm your registration by sending KSh 200 via M-PESA Paybill before the deadline.",
+  swClaim:"Usajili wa wapiga kura wa IEBC unaisha Ijumaa; thibitisha usajili wako kwa kutuma KSh 200 kwa M-PESA Paybill kabla ya mwisho.",
+  shClaim:"IEBC voter registration inaisha Friday — confirm registration yako kwa kutuma 200 bob via M-PESA Paybill before deadline.",
+  shUnknown:"Hakuna notice yoyote ya IEBC inayotaka malipo ya Paybill — huduma zote za usajili wa kura ni bure kwenye vituo rasmi. Hii ni pattern ya fraud inayojulikana msimu wa election.",
+  shNext:["Register ama confirm kwa IEBC office ama Huduma Centre — ni free kabisa.","Usitume doh kwa Paybill yoyote inayosema 'confirm voter registration'.","Report SMS hiyo kwa DCI Hotline ya Uhalifu: 0800 722 203 uonye group."],
+  unknownEn:"We could not find any IEBC notice asking voters to pay via M-PESA Paybill. All IEBC voter services are free at official centres; payment demands like this are a known fraud pattern ahead of elections.",
+  unknownSw:"Hatupati tangazo lolote la IEBC linaloomba wapiga kura kulipa kupitia M-PESA Paybill. Huduma zote za IEBC ni bure kwenye vituo rasmi; madai ya malipo kama haya ni ulaghai unaojulikana kabla ya uchaguzi.",
+  nextEn:["Register or confirm at an IEBC office or Huduma centre — it is free.","Never send money to any Paybill claiming to 'confirm' voter registration.","Report the message to the DCI Hotline ya Uhalifu: 0800 722 203 and warn the group."],
+  nextSw:["Jisajili au thibitisha kwenye ofisi ya IEBC au Huduma Centre — ni bure.","Usitume pesa kwa Paybill yoyote inayodai kuthibitisha usajili wa kura.","Ripoti ujumbe huo kwa DCI Hotline ya Uhalifu: 0800 722 203 na onya kikundi."],
+  sources:[
+    {name:"IEBC — voter registration", note:"Voter registration is free and in-person at IEBC offices and Huduma centres; IEBC never asks for M-PESA payments to confirm registration.", url:"https://www.iebc.or.ke/"},
+    {name:"Directorate of Criminal Investigations (DCI)", note:"SMS messages requesting payment to unknown Paybills are a common fraud pattern; report them to the DCI Hotline ya Uhalifu: 0800 722 203.", url:"https://www.dci.go.ke/"}
+  ]
  }
+
 ];
 var SAFETY_WORDS=["kill","waua","kuua","attack","shambulio","mob justice","burn","choma","violence","vurugu","rape","shoot","riot","vita","election","uchaguzi","vaccine","chanjo","covid","ebola","cholera","kipindupindu","suicide","abuse","ukatili"];
 
@@ -373,13 +302,25 @@ function reconcile(claim){
     });
     if(score>bestScore){bestScore=score;best=e;}
   });
-  return bestScore>=2?best:null;
+  /* Two generic keywords alone (e.g. "registration fee" + "M-PESA") must never
+     produce a verdict: require a distinctive anchor term from the matched scenario. */
+  if(!best) return null;
+  var hasAnchor=(best.anchors||[]).some(function(a){return c.indexOf(a)>=0;});
+  return (bestScore>=2&&hasAnchor)?best:null;
+}
+function claimFor(m){return lang==='sh'?(m.shClaim||m.swClaim):(lang==='sw'?m.swClaim:m.enClaim);}
+function unknownFor(m){return lang==='sh'?(m.shUnknown||m.unknownSw):(lang==='sw'?m.unknownSw:m.unknownEn);}
+function nextFor(m){return lang==='sh'?(m.shNext||m.nextSw):(lang==='sw'?m.nextSw:m.nextEn);}
+function fallbackNext(){
+  if(lang==='sw') return ["Tafuta tangazo rasmi au waraka kutoka chanzo rasmi kabla ya kusambaza.","Rudisha ujumbe kwa VeriVoice ukiwa na viunganishi vya habari rasmi kwa ukaguzi zaidi."];
+  if(lang==='sh') return ["Tafuta notice rasmi ama doc kutoka official source kabla ushare.","Rudisha ujumbe kwa VeriVoice ukiwa na links za official coverage kwa deep check."];
+  return ["Look for an official notice or document from an official source before sharing.","Send the message back to VeriVoice with links to official coverage for a deeper check."];
 }
 function verdictCard(claim,match){
   var v=match?match.verdict:'unverified';
   var conf=match?match.confidence:30;
   var cls=v;
-  var claimText=match?(lang==='sw'?match.swClaim:match.enClaim):claim;
+  var claimText=claim; /* always show the user's actual claim text, never a canned substitute */
   var html='<div class="verdictcard '+cls+'">';
   html+='<div class="claim">'+escapeHtml(claimText)+'</div>';
   html+='<span class="badge '+cls+'">'+T(v)+'</span>';
@@ -389,11 +330,11 @@ function verdictCard(claim,match){
     match.sources.forEach(function(s){
       html+='<a class="source" href="'+s.url+'" target="_blank" rel="noopener">'+escapeHtml(s.name)+'<small>'+escapeHtml(s.note)+'</small></a>';
     });
-    html+='<div class="sechead">'+T('unknown')+'</div><p class="hint">'+escapeHtml(lang==='sw'?match.unknownSw:match.unknownEn)+'</p>';
-    html+='<div class="sechead">'+T('next')+'</div><ul class="nextsteps">'+(lang==='sw'?match.nextSw:match.nextEn).map(function(n){return '<li>'+escapeHtml(n)+'</li>';}).join('')+'</ul>';
+    html+='<div class="sechead">'+T('unknown')+'</div><p class="hint">'+escapeHtml(unknownFor(match))+'</p>';
+    html+='<div class="sechead">'+T('next')+'</div><ul class="nextsteps">'+nextFor(match).map(function(n){return '<li>'+escapeHtml(n)+'</li>';}).join('')+'</ul>';
   } else {
     html+='<p class="hint" style="margin-top:10px">'+T('unvExp')+'</p>';
-    html+='<div class="sechead">'+T('next')+'</div><ul class="nextsteps"><li>'+(lang==='sw'?'Tafuta tangazo rasmi kutoka chanzo rasmi kabla ya kusambaza.':'Look for an official notice or document from an official source before sharing.')+'</li><li>'+(lang==='sw'?'Rudisha ujumbe kwa VeriVoice ukiwa na viunganishi vya habari rasmi kwa ukaguzi zaidi.':'Send the message back to VeriVoice with links to official coverage for a deeper check.')+'</li></ul>';
+    html+='<div class="sechead">'+T('next')+'</div><ul class="nextsteps">'+fallbackNext().map(function(n){return '<li>'+escapeHtml(n)+'</li>';}).join('')+'</ul>';
   }
   html+='</div>';
   return {html:html, verdict:v, claim:claimText};
@@ -426,7 +367,12 @@ function finish(claims){
   var low=' '+claims.join(' ').toLowerCase()+' ';
   var unsafe=SAFETY_WORDS.some(function(w){return low.indexOf(w)>=0;});
   if(unsafe){document.getElementById('safety').style.display='block'; window.scrollTo({top:0,behavior:'smooth'});}
-  var results=claims.map(function(c){return verdictCard(c,reconcile(c));});
+  var results=[], seen=[];
+  claims.forEach(function(c){
+    var m=reconcile(c);
+    if(m){ if(seen.indexOf(m)>=0) return; seen.push(m); }
+    results.push(verdictCard(c,m));
+  });
   var html='<div class="card"><h2>'+T('claimTitle')+'</h2></div>';
   if(claims.length===1 && claims[0].length<30) html='<div class="card"><h2>'+T('noClaims2')+'</h2></div>';
   results.forEach(function(r){html+=r.html;});
@@ -461,6 +407,3 @@ function nativeShare(){
   if(navigator.share&&lastSummary) navigator.share({title:'VeriVoice',text:lastSummary}).catch(function(){});
 }
 document.getElementById('t_safetyp').textContent=L.en.safetyP;
-</script>
-</body>
-</html>
