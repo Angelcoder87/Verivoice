@@ -8,7 +8,9 @@
 
 Submit information exactly as you received it — **voice note or text** — and VeriVoice transcribes it, researches the main claims against live sources, and returns a plain-language verdict with sources, a confidence level, honest unknowns, and clear next steps you can act on. A shareable summary goes straight back to the group chat the message came from.
 
-> **PoC scope:** the live demo (`prototype/`, deployed below) runs the full interface — voice, text and screenshot inputs, EN/SW/SH languages, safety routing, and share-back — with a curated demo evidence base. A production build replaces that base with live AI reconciliation against named sources.
+> **PoC scope:** the live demo (this repo: `index.html` + `css/` + `js/`, deployed below) runs the full interface — voice, text and screenshot inputs, EN/SW/SH languages, safety routing, and share-back — with a curated demo evidence base. A production build replaces that base with live AI reconciliation against named sources.
+
+**Repo structure:** the app itself is at the root (`index.html`, `css/styles.css`, `js/app.js` — vanilla JS, no build step, deploys as-is to GitHub Pages); `docs/` holds the pitch deck and written summary.
 
 ## Design principle
 
@@ -39,6 +41,7 @@ The demo ships with five evidence-backed scenarios: a school-fee rumour (dispute
 ## Links
 
 - **Live demo:** https://angelcoder87.github.io/Verivoice/
+- **The code:** [`index.html`](index.html) · [`css/styles.css`](css/styles.css) · [`js/app.js`](js/app.js)
 
 ---
 
